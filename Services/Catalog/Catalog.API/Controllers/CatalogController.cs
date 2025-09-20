@@ -29,6 +29,39 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
+        [Route("[action]", Name = "GetAllProducts")]
+        [ProducesResponseType(typeof(IList<ProductResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<IList<ProductResponseDto>>> GetAllProducts()
+        {
+            GetAllProductsQuery query = new GetAllProductsQuery();
+            IList<ProductResponseDto> sendQueryResult = await _mediator.Send(query);
+            return Ok(sendQueryResult);
+        }
+
+        [HttpGet]
+        [Route("[action]", Name = "GetAllBrands")]
+        [ProducesResponseType(typeof(IList<BrandResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<IList<BrandResponseDto>>> GetAllBrands()
+        {
+            GetAllBrandsQuery query = new GetAllBrandsQuery();
+            IList<BrandResponseDto> sendQueryResult = await _mediator.Send(query);
+            return Ok(sendQueryResult);
+        }
+
+        [HttpGet]
+        [Route("[action]", Name = "GetAllTypes")]
+        [ProducesResponseType(typeof(IList<TypeResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<IList<TypeResponseDto>>> GetAllTypes()
+        {
+            GetAllTypesQuery query = new GetAllTypesQuery();
+            IList<TypeResponseDto> sendQueryResult = await _mediator.Send(query);
+            return Ok(sendQueryResult);
+        }
+
+        [HttpGet]
         [Route("[action]/name", Name = "GetProductsByName")]
         [ProducesResponseType(typeof(ProductResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
