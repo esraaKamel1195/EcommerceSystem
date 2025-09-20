@@ -1,0 +1,34 @@
+﻿using AutoMapper;
+using Catalog.Application.Queries;
+using Catalog.Application.Responses;
+using Catalog.Core.Entities;
+using Catalog.Core.Repositories;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Catalog.Application.Handlers.Queries
+{
+    public class GetAllProductsQueryHandler: IRequestHandler<GetAllProductsQuery, IList<ProductResponseDto>>
+    {
+        private readonly IMapper _mapper;
+        private readonly IProductRepository _productRepository;
+
+        public GetAllProductsQueryHandler(IMapper mapper, IProductRepository productRepository)
+        {
+            _mapper = mapper;
+            _productRepository = productRepository;
+        }
+
+        public Task<IList<ProductResponseDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        {
+            //var productsList = _productRepository.GetAllWithIncludesAsync(new List<string> { "ProductType", "ProductBrand" }).Result;
+            var productsList = _productRepository.GetAllProducts().Result;
+            var productsResponseDto = _mapper.Map<IList<ProductResponseDto>>(productsList.ToList());
+            return Task.FromResult(productsResponseDto);
+        }
+    }
+}
