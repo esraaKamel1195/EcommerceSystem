@@ -19,5 +19,6 @@ namespace Catalog.Core.Repositories
         Task<Product> CreateProduct(Product product);
         Task<bool> UpdateProduct(Product product);
         Task<bool> DeleteProduct(string id);
+        //object GetAllWithIncludesAsync(List<string> list);
     }
 }
