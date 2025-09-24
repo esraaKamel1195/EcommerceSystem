@@ -34,7 +34,7 @@ namespace Catalog.Infrastructure.Data.Context
             var filePath = Path.Combine("Data", "SeedData", "brands.json");
             if (!File.Exists(filePath))
             {
-                Console.WriteLine($"Seed file for brands not found: {filePath}");
+                Console.WriteLine($"Seed file for brands not found: {Path.GetFullPath(filePath)}");
                 return;
             }
             var brandsData = await File.ReadAllTextAsync(filePath);
