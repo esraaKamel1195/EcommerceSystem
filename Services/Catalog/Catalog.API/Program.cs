@@ -5,6 +5,7 @@ using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data.Context;
 using Catalog.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using System.Reflection;
 
 namespace Catalog.API;
@@ -57,6 +58,8 @@ public class Program
 
         builder.Services.AddOpenApi();
 
+        builder.Services.AddCors();
+
         var app = builder.Build(); 
 
         //app.MapDefaultEndpoints();
@@ -70,7 +73,7 @@ public class Program
         }
 
         app.UseAuthorization();
-
+        app.UseCors();
 
         app.MapControllers();
 
