@@ -18,7 +18,9 @@ namespace Catalog.Infrastructure.Data.Context
             {
                 return;
             }
-            var filePath = Path.Combine("Data", "SeedData", "products.json");
+
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Data", "SeedData", "products.json");
             if (!File.Exists(filePath))
             {
                 Console.WriteLine($"Seed file for products not found: {filePath}");

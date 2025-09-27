@@ -24,14 +24,15 @@ namespace Catalog.Infrastructure.Data.Context
         }*/
 
         // try to seed data if collection is empty - for MongoDB implementation with other way
-        public static async Task SeedAsync(IMongoCollection<ProductBrand> brandCollection) 
+        public static async Task SeedAsync(IMongoCollection<ProductBrand> brandCollection)
         {
             var hasBrands = await brandCollection.Find(_ => true).AnyAsync();
             if (hasBrands)
             {
                 return;
             }
-            var filePath = Path.Combine("Data", "SeedData", "brands.json");
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Data", "SeedData", "brands.json");
             if (!File.Exists(filePath))
             {
                 Console.WriteLine($"Seed file for brands not found: {Path.GetFullPath(filePath)}");
