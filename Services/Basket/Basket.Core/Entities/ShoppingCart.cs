@@ -17,6 +17,5 @@ namespace Basket.Core.Entities
         {
             UserName = userName;
         }
-
     }
 }

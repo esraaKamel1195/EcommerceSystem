@@ -23,7 +23,6 @@ namespace Basket.Infrastructure.Repositories
             }
             return JsonConvert.DeserializeObject<ShoppingCart>(basket);
         }
-
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart cart)
         {
             var basket = await _Rediscache.GetStringAsync(cart.UserName);
@@ -37,7 +36,6 @@ namespace Basket.Infrastructure.Repositories
                 return await GetBasket(cart.UserName);
             }
         }
-
         public async Task DeleteBasket(string username)
         {
             var basket = await _Rediscache.GetStringAsync(username);
