@@ -22,5 +22,11 @@ services:
      - "27017:27017"
     volumes:
      - catalogdata:/data/db
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.Api/Dockerfile
+
 volumes:
   catalogdata: 
