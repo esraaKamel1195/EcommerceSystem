@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Discount.Core.Entities
 {
-    public class Copoun
+    public class Coupon
     {
         public int Id { get; set; }
         public string ProductName { get; set; }

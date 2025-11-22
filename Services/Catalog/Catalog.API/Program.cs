@@ -4,8 +4,6 @@ using Catalog.Application.Queries;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data.Context;
 using Catalog.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using System.Reflection;
 
 namespace Catalog.API;
@@ -58,7 +56,13 @@ public class Program
 
         builder.Services.AddOpenApi();
 
-        builder.Services.AddCors();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", p =>
+                p.AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader());
+        });
 
         var app = builder.Build(); 
 
@@ -73,7 +77,7 @@ public class Program
         }
 
         app.UseAuthorization();
-        app.UseCors();
+        app.UseCors("AllowAll");
 
         app.MapControllers();
 

@@ -1,7 +1,9 @@
 using Basket.Application.Commands;
+using Basket.Application.GRPCServices;
 using Basket.Application.Mappers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
+using Discunt.Grpc.Protos;
 using System.Reflection;
 
 namespace Basket.Api;
@@ -28,6 +30,10 @@ public class Program
         );
 
         builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+        builder.Services.AddScoped<DiscountGrpcService>();
+        builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+            cfg => cfg.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"])
+        );
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -36,7 +42,6 @@ public class Program
             options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
         });
 
-        // Replace the incorrect AddSwaggerGen usage with the correct overload that takes an options lambda.
         builder.Services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
