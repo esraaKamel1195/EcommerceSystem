@@ -1,0 +1,34 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Ordering.Core.Entities;
+
+
+namespace Ordering.Infrastructure.Data
+{
+    public class OrderContext: DbContext
+    {
+        public OrderContext(DbContextOptions<OrderContext> options): base(options)
+        {
+        }
+
+        public DbSet<Order> orders { get; set; }
+        
+        public override Task<int> SaveChangesAsync(bool acceptAllChanges, CancellationToken cancellationToken = default)
+        {
+            foreach(var entry in ChangeTracker.Entries<EntityBase>()) 
+            {
+                switch(entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedDate = DateTime.Now;
+                        entry.Entity.CreatedBy = "Esraa";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedDate = DateTime.Now;
+                        entry.Entity.LastModifiedBy = "Esraa";
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(acceptAllChanges, cancellationToken);
+        }
+    }
+}
