@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\EventBus.Messages\EventBus.Messages.csproj" />
+    <ProjectReference Include="..\..\Discount\Discount.Application\Discount.Application.csproj" />
     <ProjectReference Include="..\Basket.Core\Basket.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
-    <PackageReference Include="MediatR" Version="13.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-	  <Protobuf Include="..\..\..\Services\Discount\Discount.Application\Protos\Discount.proto" Link="Protos/Discount.proto" GrpcServices="Client" />
+    <PackageReference Include="MediatR" Version="13.1.0" />
+	  
   </ItemGroup>
 </Project>

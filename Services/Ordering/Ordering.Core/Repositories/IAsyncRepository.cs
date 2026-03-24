@@ -9,7 +9,7 @@ namespace Ordering.Core.Repositories
         Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetByIdAsync(int id);
         Task<T> AddAsync(T Entity);
-        Task<T> UpdateAsync(T Entity);
-        Task<T> DeleteAsync(int id);
+        Task UpdateAsync(T Entity);
+        Task DeleteAsync(T Entity);
     }
 }

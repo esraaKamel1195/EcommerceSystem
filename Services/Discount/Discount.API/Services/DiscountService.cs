@@ -1,5 +1,7 @@
 ﻿using Discount.Application.Commands;
-using Discunt.Grpc.Protos;
+using Discount.Application.Queries;
+using Discount.Grpc.Protos;
+using Grpc.Core;
 using MediatR;
 
 namespace Discount.API.Services
@@ -12,13 +14,14 @@ namespace Discount.API.Services
             _mediator = mediator;
         }
 
-        public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, Grpc.Core.ServerCallContext context)
+        public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
         {
-            var query = new Discount.Application.Queries.GetDiscountQuery(request.ProductName);
-            return await _mediator.Send(query, context.CancellationToken);
+            var query = new GetDiscountQuery(request.ProductName);
+            var result = await _mediator.Send(query);
+            return result;
         }
 
-        public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, Grpc.Core.ServerCallContext context)
+        public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
         {
             var command = new CreateDiscountCouponCommand
             {
@@ -31,7 +34,7 @@ namespace Discount.API.Services
             return result;
         }
 
-        public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, Grpc.Core.ServerCallContext context)
+        public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
         {
             var command = new UpdateDiscountCouponCommand
             {
@@ -44,7 +47,7 @@ namespace Discount.API.Services
             return result;
         }
 
-        public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, Grpc.Core.ServerCallContext context)
+        public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
         {
             var command = new DeleteDiscountCouponCommand(request.ProductName);
             var result = await _mediator.Send(command, context.CancellationToken);

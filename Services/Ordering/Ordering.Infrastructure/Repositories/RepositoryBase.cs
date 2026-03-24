@@ -1,39 +1,51 @@
-﻿using Ordering.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Ordering.Core.Entities;
 using Ordering.Core.Repositories;
+using Ordering.Infrastructure.Data;
 using System.Linq.Expressions;
 
 namespace Ordering.Infrastructure.Repositories
 {
     public class RepositoryBase<T> : IAsyncRepository<T> where T : EntityBase
     {
-        public Task<T> AddAsync(T Entity)
+        public readonly OrderContext _orderContext;
+        public RepositoryBase (OrderContext orderContext)
         {
-            throw new NotImplementedException();
+            _orderContext = orderContext;
         }
 
-        public Task<T> DeleteAsync(int id)
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _orderContext.Set<T>().ToListAsync();
         }
 
-        public Task<IReadOnlyList<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _orderContext.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _orderContext.Set<T>().FindAsync(id);
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<T> AddAsync(T Entity)
         {
-            throw new NotImplementedException();
+            _orderContext.Set<T>().Add(Entity);
+            await _orderContext.SaveChangesAsync();
+            return Entity;
         }
 
-        public Task<T> UpdateAsync(T Entity)
+        public async Task UpdateAsync(T Entity)
         {
-            throw new NotImplementedException();
+            _orderContext.Entry(Entity).State = EntityState.Modified;
+            await _orderContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(T Entity)
+        {
+            _orderContext.Set<T>().Remove(Entity);
+            await _orderContext.SaveChangesAsync();
         }
     }
 }

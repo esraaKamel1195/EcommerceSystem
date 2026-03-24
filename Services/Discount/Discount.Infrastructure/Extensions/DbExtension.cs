@@ -53,12 +53,12 @@ namespace Discount.Infrastructure.Extensions
                                                     Amount INT)";
                     command.ExecuteNonQuery();
                     command.CommandText = "INSERT INTO Coupon(ProductName, Description, Amount) " +
-                        "VALUES ('PowerFit 19 FH Rubber Spike Cricket Shoes'," +
-                        "'Designed for professional as well as amateur badminton players. These indoor shoes are crafted with synthetic upper that provides natural fit, while the EVA midsole provides lightweight cushioning. The shoes can be used for Badminton and Squash', 100)";
+                        "VALUES ('4Flex Pitch Premier League Football (Yellow/Purple)'," +
+                        "'discount 1', 90)";
                     command.ExecuteNonQuery();
                     command.CommandText = "INSERT INTO Coupon(ProductName, Description, Amount) " +
-                        "VALUES ('Body Building Egypt Shadow Spirit Mens Badminton Shoes'," +
-                        "'Designed for professional as well as amateur badminton players. These indoor shoes are crafted with synthetic upper that provides natural fit, while the EVA midsole provides lightweight cushioning. The shoes can be used for Badminton and Squash', 200)";
+                        "VALUES ('Adidas FIFA World Cup 2018 OMB Football'," +
+                        "'discount 2', 200)";
                     command.ExecuteNonQuery();
                     break;
                 }

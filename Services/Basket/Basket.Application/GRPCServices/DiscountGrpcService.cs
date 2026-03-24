@@ -1,4 +1,4 @@
-﻿using Discunt.Grpc.Protos;
+﻿using Discount.Grpc.Protos;
 
 namespace Basket.Application.GRPCServices
 {

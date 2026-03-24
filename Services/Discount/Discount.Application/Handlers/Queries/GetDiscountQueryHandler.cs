@@ -1,6 +1,7 @@
 ﻿using Discount.Application.Queries;
 using Discount.Core.Repositories;
-using Discunt.Grpc.Protos;
+using Discount.Grpc.Protos;
+using Grpc.Core;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -25,7 +26,7 @@ namespace Discount.Application.Handlers.Queries
             var coupon = await _discountRepository.GetDiscount(request.ProductName);
             if (coupon == null)
             {
-                throw new Grpc.Core.RpcException(new Grpc.Core.Status(Grpc.Core.StatusCode.NotFound, $"Discount for product name = {request.ProductName} not found"));
+                throw new RpcException(new Status(StatusCode.NotFound, $"Discount for product name = {request.ProductName} not found"));
             }
             var couponModel = new CouponModel
             {

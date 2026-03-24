@@ -2,14 +2,9 @@
 using Discount.Application.Handlers.Queries;
 using Discount.Core.Entities;
 using Discount.Core.Repositories;
-using Discunt.Grpc.Protos;
+using Discount.Grpc.Protos;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Discount.Application.Commands
 {

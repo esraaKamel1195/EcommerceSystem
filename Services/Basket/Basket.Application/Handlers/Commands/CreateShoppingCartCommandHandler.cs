@@ -24,7 +24,8 @@ namespace Basket.Application.Handlers.Commands
             foreach (var item in request.Items)
             {
                 var coupon = await _discountGrpcService.GetDiscount(item.productName);
-                if (coupon is not null) {
+                if (coupon is not null)
+                {
                     item.price -= coupon.Amount;
                 }
             }

@@ -3,8 +3,6 @@ using Catalog.Application.Queries;
 using Catalog.Application.Responses;
 using Catalog.Core.Specs;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

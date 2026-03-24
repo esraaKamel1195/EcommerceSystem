@@ -1,5 +1,4 @@
-﻿
-using Discunt.Grpc.Protos;
+﻿using Discount.Grpc.Protos;
 using MediatR;
 
 namespace Discount.Application.Commands

@@ -1,19 +1,32 @@
-﻿using Basket.Application.Commands;
+﻿using Asp.Versioning;
+using AutoMapper;
+using Basket.Application.Commands;
 using Basket.Application.Queries;
 using Basket.Application.Responses;
+using Basket.Core.Entities;
+using EventBus.Messages.Events;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace Basket.Api.Controllers
 {
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BasketApiController : BaseApiController
     {
         private readonly IMediator _mediator;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public BasketApiController(IMediator mediator) 
+        public BasketApiController(IMediator mediator, IPublishEndpoint publishEndpoint, IMapper mapper, ILogger logger)
         {
             _mediator = mediator;
+            _publishEndpoint = publishEndpoint;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -41,6 +54,33 @@ namespace Basket.Api.Controllers
         {
             DeleteBaskerByUserNameCommand command = new DeleteBaskerByUserNameCommand(userName);
             return Ok( await _mediator.Send(command));
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckoutV2 basketCheckout)
+        {
+            //get basket by username
+            var query = new GetBasketByUserNameQuery(basketCheckout.Username);
+            var basket = await _mediator.Send(query);
+
+            if(basket == null)
+            { 
+                return BadRequest();  
+            }
+
+            var eventMsg = _mapper.Map<BasketCheckoutEventV2>(basket);
+            eventMsg.TotalPrice = basket.TotalPrice;
+            await _publishEndpoint.Publish(eventMsg);
+
+            _logger.LogInformation($"Basket published for {basket.UserName} with V2 endpoint");
+
+            //remove from basket
+            var deletedCMD = new DeleteBaskerByUserNameCommand(basket.UserName);
+            await _mediator.Send(deletedCMD);
+            return Accepted();
         }
     }
 }

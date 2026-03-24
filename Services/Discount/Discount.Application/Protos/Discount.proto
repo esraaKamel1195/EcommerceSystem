@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Discunt.Grpc.Protos";
+option csharp_namespace = "Discount.Grpc.Protos";
 
 service DiscountProtoService
 {

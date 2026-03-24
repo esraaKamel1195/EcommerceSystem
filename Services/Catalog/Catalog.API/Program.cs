@@ -4,6 +4,8 @@ using Catalog.Application.Queries;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data.Context;
 using Catalog.Infrastructure.Repositories;
+using Common.Logging;
+using Serilog;
 using System.Reflection;
 
 namespace Catalog.API;
@@ -16,6 +18,7 @@ public class Program
         //builder.AddServiceDefaults();
 
         // Add services to the container.
+        builder.Host.UseSerilog(Logging.ConfigureLogger);
 
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -58,8 +61,8 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowAll", p =>
-                p.AllowAnyOrigin()
+            options.AddPolicy("AllowAll", policy =>
+                policy.AllowAnyOrigin()
                  .AllowAnyMethod()
                  .AllowAnyHeader());
         });
@@ -76,8 +79,9 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseAuthorization();
+        app.UseHttpsRedirection();
         app.UseCors("AllowAll");
+        app.UseAuthorization();
 
         app.MapControllers();
 

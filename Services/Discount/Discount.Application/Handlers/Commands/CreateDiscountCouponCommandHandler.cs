@@ -1,10 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Discount.Application.Commands;
 using Discount.Application.Handlers.Queries;
 using Discount.Core.Entities;
 using Discount.Core.Repositories;
-using Discunt.Grpc.Protos;
+using Discount.Grpc.Protos;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

@@ -26,8 +26,11 @@ namespace Basket.Infrastructure.Repositories
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart cart)
         {
             var basket = await _Rediscache.GetStringAsync(cart.UserName);
-            if(basket != null)
+            Console.WriteLine("Updating existing basket for user: " + await GetBasket(cart.UserName));
+
+            if (basket != null)
             {
+                Console.WriteLine("Updating existing basket for user: " + await GetBasket(cart.UserName));
                 return await GetBasket(cart.UserName);
             }
             else
