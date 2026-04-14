@@ -23,11 +23,12 @@ namespace Ordering.Application.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var orderToUpdate = await _orderRepository.GetByIdAsync(request.Id);
-            if (orderToUpdate == null)
-            {
-                throw new OrderNotFoundException(nameof(Order), request.Id);
-            }
+            //var orderToUpdate = await _orderRepository.GetByIdAsync(request.Id);
+
+            //if (orderToUpdate == null)
+            //{
+            //    throw new OrderNotFoundException(nameof(Order), request.Id);
+            //}
             var updatedEntity = _mapper.Map<Order>(request);
             await _orderRepository.UpdateAsync(updatedEntity);
             _logger.LogInformation("Order {Id} is successfully Updated.", request.Id);

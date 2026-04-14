@@ -6,6 +6,10 @@ using Basket.Infrastructure.Repositories;
 using Common.Logging;
 using Discount.Grpc.Protos;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
@@ -16,6 +20,8 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
         var builder = WebApplication.CreateBuilder(args);
         //builder.AddServiceDefaults();
 
@@ -47,6 +53,51 @@ public class Program
         );
 
         builder.Services.AddMassTransitHostedService();
+
+        var userPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+
+        builder.Services.AddControllers(config =>
+        {
+            config.Filters.Add(new AuthorizeFilter(userPolicy));
+        });
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+                options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
+                options.RequireHttpsMetadata = true; // Set to true in production
+
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://localhost:9009",
+                    ValidateAudience = true,
+                    ValidAudience = "Basket",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
+                };
+
+                // add this to docker to host communication
+                options.BackchannelHttpHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                };
+
+                //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Log.Error("Authentication failed: {Error}", context.Exception.Message);
+                        Console.WriteLine($"Authentication failed");
+                        Console.WriteLine($"Exception: {context.Exception}");
+                        Console.WriteLine($"Authority: {options.Authority}");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -89,6 +140,32 @@ public class Program
                 }
             });
 
+            // Optional: add JWT bearer auth to Swagger UI
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter JWT token: Bearer {token}"
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id   = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+
             options.DocInclusionPredicate((version, apiDescription) =>
             {
                 if (apiDescription.TryGetMethodInfo(out var methodInfo))
@@ -108,7 +185,7 @@ public class Program
 
         builder.Services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
+            options.Configuration = builder.Configuration["CacheSettings:ConnectionString"];
         });
 
         builder.Services.AddOpenApi();

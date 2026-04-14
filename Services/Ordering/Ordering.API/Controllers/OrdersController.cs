@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Commands;
 using Ordering.Application.Queries;
@@ -7,7 +8,8 @@ using System.Net;
 
 namespace Ordering.API.Controllers
 {
-
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class OrdersController : BaseApiController
     {
         private readonly IMediator _mediator;
@@ -41,7 +43,6 @@ namespace Ordering.API.Controllers
         [HttpPut(Name = "UpdateOrder")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult<int>> UpdateOrder([FromBody] UpdateOrderCommand command)
         {
             var result = await _mediator.Send(command);
@@ -52,7 +53,6 @@ namespace Ordering.API.Controllers
         [HttpDelete(Name = "DeleteOrder")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult> DeleteOrder([FromBody] DeleteOrderCommand command)
         {
             var result = await _mediator.Send(command);

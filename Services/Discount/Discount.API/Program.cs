@@ -7,6 +7,7 @@ using Discount.Core.Repositories;
 using Discount.Grpc.Protos;
 using Discount.Infrastructure.Extensions;
 using Discount.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using System.Reflection;
 
@@ -25,7 +26,7 @@ public class Program
         builder.Services.AddGrpc();
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
+        //builder.Services.AddOpenApi();
 
         builder.Services.AddAutoMapper(typeof(DiscountProfile).Assembly);
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies
@@ -42,32 +43,20 @@ public class Program
             o.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]);
         });
 
-        builder.Services.AddSwaggerGen(options =>
+        builder.WebHost.ConfigureKestrel(options =>
         {
-            options.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo
+            options.ListenAnyIP(8002, o =>
             {
-                Title = "Discount API",
-                Version = "v1",
-                Description = "This is API for Discount microservice in ecommerce application",
-                Contact = new Microsoft.OpenApi.OpenApiContact
-                {
-                    Name = "Esraa",
-                    Email = "Esraa@gmail.com",
-                    Url = new Uri("https://yourwebsite.eg")
-                }
+                o.Protocols = HttpProtocols.Http2;
             });
         });
 
         var app = builder.Build();
 
-        //app.MapDefaultEndpoints();
-
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI();
         }
 
         app.MigrateDatabase<Program>();

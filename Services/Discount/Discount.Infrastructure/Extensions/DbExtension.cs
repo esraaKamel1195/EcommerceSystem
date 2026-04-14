@@ -54,11 +54,11 @@ namespace Discount.Infrastructure.Extensions
                     command.ExecuteNonQuery();
                     command.CommandText = "INSERT INTO Coupon(ProductName, Description, Amount) " +
                         "VALUES ('4Flex Pitch Premier League Football (Yellow/Purple)'," +
-                        "'discount 1', 90)";
+                        "'discount 1', 100)";
                     command.ExecuteNonQuery();
                     command.CommandText = "INSERT INTO Coupon(ProductName, Description, Amount) " +
-                        "VALUES ('Adidas FIFA World Cup 2018 OMB Football'," +
-                        "'discount 2', 200)";
+                        "VALUES ('Adidas FIFA World Cup Top Glider Ball'," +
+                        "'discount 2', 400)";
                     command.ExecuteNonQuery();
                     break;
                 }

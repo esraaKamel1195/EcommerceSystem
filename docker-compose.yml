@@ -1,11 +1,29 @@
 services:
+  reverseproxy:
+    container_name: nginxgateway
+    restart: always
+    build:
+      context: .
+      dockerfile: API.Gateway/nginx/nginx.Dockerfile
+    depends_on:
+      - eshop.Identity
+      - catalog.api
+      - basket.api
+      - discount.api
+      - ordering.api
+    ports:
+      - "9300:9100"
+
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
+    container_name: catalog.api
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
     ports:
      - "8000:8000"
+    extra_hosts:
+     - "host.docker.internal:host-gateway"
     depends_on:
      - catalogdb
     environment:
@@ -14,6 +32,12 @@ services:
      - "DatabaseSettings__ProductsCollectionName=Products"
      - "DatabaseSettings__BrandsCollectionName=Brands"
      - "DatabaseSettings__TypesCollectionName=Types"
+     - "ASPNETCORE_HTTP_PORTS=8000"   # ← ensure this exists
+     - "ASPNETCORE_URLS=http://+:8000" # ← or this (use one, not both)
+     - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+     - Auth__Authority="https://host.docker.internal:9009"
+     - Auth__RequireHttpsMetadata=false
+     - Auth__Audience=Catalog
 
   catalogdb:
     image: mongo
@@ -22,6 +46,7 @@ services:
      - "27017:27017"
     volumes:
      - catalogdata:/data/db
+
   basketdb:
     image: redis:alpine
     container_name: basketdb
@@ -30,6 +55,7 @@ services:
      - "6379:6379"
     volumes:
      - basketdata:/data/db
+
   discountdb:
     image: postgres:13-alpine
     container_name: discountdb
@@ -46,6 +72,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   orderdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: orderdb
@@ -85,6 +112,7 @@ services:
       
   basket.api:
     image: ${DOCKER_REGISTRY-}basketapi
+    container_name: basket.api
     build:
       context: .
       dockerfile: Services/Basket/Basket.Api/Dockerfile
@@ -94,10 +122,12 @@ services:
       - basketdb
       - rabbitmq
     environment:
-      - "ASPNETCORE_ENVIRONMENT=http://+:8000"
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8000
       - "CacheSettings__connectionString=basketdb:6379"
-      - "GrpcSettings__DiscountUrl=http://discount.api:8080"
-      - "EventBusSettings__HostAddress=amqp://guest:guest@localhost:5672"
+      - "GrpcSettings__DiscountUrl=http://localhost:8002"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
   
   portainer:
     image: portainer/portainer-ce
@@ -118,13 +148,17 @@ services:
       dockerfile: Services/Discount/Discount.API/Dockerfile
     container_name: discount.api
     ports:
-      - "8002:8000"
+        - "8002:8000"   # REST / Swagger (HTTP/1.1)
+        - "8080:8080"   # gRPC (HTTP/2)  ← ADD THIS
     depends_on:
        discountdb:
            condition: service_healthy
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8002;http://+:8080  # ← UPDATE THIS
       - "DatabaseSettings__ConnectionString=Host=discountdb;Port=5432;Database=discountdb;Username=admin;Password=password@123"
-        
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+
   ordering.api:
     image: ${DOCKER_REGISTRY-}orderingapi
     build:
@@ -132,7 +166,7 @@ services:
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
     container_name: ordering.api
     ports:
-      - "8003:8000"
+      - "8003:8080"
     depends_on:
       - orderdb
       - rabbitmq
@@ -140,10 +174,34 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - "ConnectionStrings__OrderingConnectionString=Server=orderdb;Database=orderDb2;User Id=sa;Password=password@123;TrustServerCertificate=true;"
-      - "EventBusSettings__HostAddress=amqp://guest:guest@localhost:5672"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    container_name: elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.3
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
 
   ocelt.apigateway:
     image: ${DOCKER_REGISTRY-}oceltapigateway
+    container_name: ocelt.apigateway
     build:
       context: .
       dockerfile: API.Gateway/Ocelt.APIGateway/Dockerfile
@@ -151,12 +209,25 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
     depends_on:
+      - eshop.Identity
       - catalog.api
       - basket.api
       - discount.api
       - ordering.api
     ports:
       - "8010:8080"
+
+  eshop.Identity:
+    image: ${DOCKER_REGISTRY-}eshopidentity
+    container_name: identityserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:9011
+    build:
+      context: .
+      dockerfile: eshop.Identity/Dockerfile
+    ports:
+      - "9011:9011"
 
 volumes:
   catalogdata:
@@ -165,3 +236,4 @@ volumes:
   discountdata:
   pgadmin_data:
   orderdb-data:
+  elasticsearch-data:

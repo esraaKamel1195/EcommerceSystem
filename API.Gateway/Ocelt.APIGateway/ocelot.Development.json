@@ -6,10 +6,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 }
@@ -19,10 +22,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetProductById/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -31,10 +37,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetAllProducts",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -43,8 +52,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetAllBrands",
@@ -55,8 +64,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetAllTypes",
@@ -67,8 +76,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8000"
+          "Host": "catalog.api",
+          "Port": 8000
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetProductsByBrandName/{brand}",
@@ -76,48 +85,54 @@
     },
     //Basket API
     {
-      "DownstreamPathTemplate": "/api/v1/Basket/GetBasket/{userName}",
+      "DownstreamPathTemplate": "/api/v1/BasketApi/GetBasket/{userName}",
       "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8001"
+          "Port": 8001
         }
       ],
       "UpstreamPathTemplate": "/Basket/GetBasket/{userName}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Basket/DeleteBasket/{userName}",
+      "DownstreamPathTemplate": "/api/v1/BasketApi/DeleteBasket/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8001"
+          "Port": 8001
         }
       ],
       "UpstreamPathTemplate": "/Basket/DeleteBasket/{userName}",
       "UpstreamHttpMethod": [ "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Basket/CreateBasket",
+      "DownstreamPathTemplate": "/api/v1/BasketApi/CreateBasket",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8001"
+          "Port": 8001
         }
       ],
       "UpstreamPathTemplate": "/Basket/CreateBasket",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Basket/Checkout",
+      "DownstreamPathTemplate": "/api/v1/BasketApi/Checkout",
       "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8001"
+          "Port": 8001
         }
       ],
       "UpstreamPathTemplate": "/Basket/Checkout",
@@ -136,7 +151,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8001"
+          "Port": 8001
         }
       ],
       "UpstreamPathTemplate": "/Basket/CheckoutV2",
@@ -155,8 +170,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8002"
+          "Host": "discount.api",
+          "Port": 8002
         }
       ],
       "UpstreamPathTemplate": "/Discount/{productName}",
@@ -167,8 +182,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "8002"
+          "Host": "discount.api",
+          "Port": 8002
         }
       ],
       "UpstreamPathTemplate": "/Discount",
@@ -181,7 +196,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
-          "Port": "8003"
+          "Port": 8003
         }
       ],
       "UpstreamPathTemplate": "/Order/{userName}",

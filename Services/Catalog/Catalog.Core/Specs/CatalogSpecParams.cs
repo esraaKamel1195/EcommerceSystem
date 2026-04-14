@@ -1,5 +1,4 @@
 ﻿
-
 namespace Catalog.Core.Specs
 {
     public class CatalogSpecParams

@@ -1,4 +1,5 @@
-﻿using Catalog.Application.Commands;
+﻿using Asp.Versioning;
+using Catalog.Application.Commands;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
 using Catalog.Core.Specs;
@@ -8,12 +9,20 @@ using System.Net;
 
 namespace Catalog.API.Controllers
 {
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class CatalogController : BaseApiController
     {
         private readonly IMediator _mediator;
-        public CatalogController(IMediator mediator)
+        private readonly ILogger<CatalogController> _logger;
+
+        public CatalogController(
+            IMediator mediator,
+            ILogger<CatalogController> logger
+        )
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -68,6 +77,7 @@ namespace Catalog.API.Controllers
         {
             GetProductsByNameQuery query = new GetProductsByNameQuery(name);
             IList<ProductResponseDto> sendQueryResult = await _mediator.Send(query);
+            _logger.LogInformation("GetProductsByName query executed with name: {name}", name);
             return Ok(sendQueryResult);
         }
 

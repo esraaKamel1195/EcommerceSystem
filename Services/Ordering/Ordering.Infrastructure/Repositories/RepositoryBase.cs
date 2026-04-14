@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
+using Ordering.Application.Extensions;
 using Ordering.Core.Entities;
 using Ordering.Core.Repositories;
 using Ordering.Infrastructure.Data;
@@ -38,7 +40,13 @@ namespace Ordering.Infrastructure.Repositories
 
         public async Task UpdateAsync(T Entity)
         {
-            _orderContext.Entry(Entity).State = EntityState.Modified;
+            var existing = await _orderContext.Set<T>().FindAsync(Entity.Id);
+
+            if (existing == null)
+                throw new OrderNotFoundException(nameof(Order), Entity.Id);
+
+            _orderContext.Entry(existing).CurrentValues.SetValues(Entity);
+
             await _orderContext.SaveChangesAsync();
         }
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -21,12 +22,32 @@ namespace Ocelt.APIGateway
 
             builder.Services.AddControllers();
 
+            var authSchema = "EShoppingGatewayAuthSchema";
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
+                {
+                    options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
+                    options.Audience = "EShoppingGateway"; // API resource name defined in IdentityServer
+                    options.RequireHttpsMetadata = false; // only for dev
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateAudience = true,
+                        ValidAudience = "EShoppingGateway",
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "https://host.docker.internal:9009",
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero // Adjust as needed
+                    };
+                });
+
             builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json",
                 optional: true, reloadOnChange: true
             );
+
             builder.Services.AddOcelot(builder.Configuration);
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
 
             //builder.Services.AddSwaggerGen(options =>
             //{
@@ -49,8 +70,9 @@ namespace Ocelt.APIGateway
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+
             }
+
             app.UseCors("CorsPolicy");
 
             app.UseRouting();

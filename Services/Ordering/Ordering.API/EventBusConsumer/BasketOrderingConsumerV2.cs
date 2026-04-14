@@ -15,7 +15,7 @@ namespace Ordering.API.EventBusConsumer
           IMediator mediator,
           IMapper mapper,
           ILogger<BasketOrderingConsumerV2> logger
-        ) 
+        )
         {
             _mediator = mediator;
             _mapper = mapper;

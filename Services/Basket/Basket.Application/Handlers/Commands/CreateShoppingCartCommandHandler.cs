@@ -13,10 +13,14 @@ namespace Basket.Application.Handlers.Commands
         private readonly IMapper _mapper;
         private readonly DiscountGrpcService _discountGrpcService;
 
-        public CreateShoppingCartCommandHandler(IBasketRepository basketRepository, IMapper mapper, DiscountGrpcService discountGrpcService) {
-            _basketRepository = basketRepository;
-            _mapper = mapper;
-            _discountGrpcService = discountGrpcService;
+        public CreateShoppingCartCommandHandler(
+           IBasketRepository basketRepository,
+           IMapper mapper,
+           DiscountGrpcService discountGrpcService
+        ) {
+           _basketRepository = basketRepository;
+           _mapper = mapper;
+           _discountGrpcService = discountGrpcService;
         }
 
         public async Task<ShoppingCartResponse> Handle(CreateShoppingCartCommand request, CancellationToken cancellationToken)

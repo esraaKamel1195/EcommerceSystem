@@ -6,7 +6,6 @@ using Basket.Core.Entities;
 using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -20,13 +19,26 @@ namespace Basket.Api.Controllers.V2
         private readonly IMediator _mediator;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<BasketApiController> _logger;
+
+        public BasketApiController(
+            IMediator mediator,
+            IPublishEndpoint publishEndpoint,
+            IMapper mapper,
+            ILogger<BasketApiController> logger
+        )
+        {
+            _mediator = mediator;
+            _publishEndpoint = publishEndpoint;
+            _mapper = mapper;
+            _logger = logger;
+        }
 
         [Route("[action]")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckoutV2 basketCheckout)
         {
             //get basket by username
             var query = new GetBasketByUserNameQuery(basketCheckout.Username);
@@ -37,7 +49,7 @@ namespace Basket.Api.Controllers.V2
                 return BadRequest();
             }
 
-            var eventMsg = _mapper.Map<BasketCheckoutEvent>(basket);
+            var eventMsg = _mapper.Map<BasketCheckoutEventV2>(basket);
             eventMsg.TotalPrice = basket.TotalPrice;
             await _publishEndpoint.Publish(eventMsg);
 

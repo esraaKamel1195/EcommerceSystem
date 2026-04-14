@@ -50,6 +50,7 @@ namespace Ordering.API
 
             builder.Services.AddMassTransit(config => {
                 config.AddConsumer<BasketOrderingConsumer>();
+                config.AddConsumer<BasketOrderingConsumerV2>();
 
                 config.UsingRabbitMq((context, cfg) =>
                 {

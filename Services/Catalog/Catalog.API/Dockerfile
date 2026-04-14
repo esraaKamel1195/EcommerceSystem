@@ -4,8 +4,9 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 443
+EXPOSE 8000
+#EXPOSE 443
+ENV ASPNETCORE_HTTP_PORTS=8000
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -15,6 +16,7 @@ COPY ["Services/Catalog/Catalog.API/Catalog.API.csproj", "Services/Catalog/Catal
 COPY ["Services/Catalog/Catalog.Application/Catalog.Application.csproj", "Services/Catalog/Catalog.Application/"]
 COPY ["Services/Catalog/Catalog.Core/Catalog.Core.csproj", "Services/Catalog/Catalog.Core/"]
 COPY ["Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj", "Services/Catalog/Catalog.Infrastructure/"]
+COPY ["Infrastructure/Common.Logging/Common.Logging.csproj","Infrastructure/Common.Logging/"]
 COPY Services/Catalog/Catalog.Infrastructure/Data/SeedData src/Services/Catalog/Catalog.Infrastructure/Data/SeedData
 
 

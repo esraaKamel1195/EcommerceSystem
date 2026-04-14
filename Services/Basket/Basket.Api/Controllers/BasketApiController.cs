@@ -19,9 +19,14 @@ namespace Basket.Api.Controllers
         private readonly IMediator _mediator;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<BasketApiController> _logger;
 
-        public BasketApiController(IMediator mediator, IPublishEndpoint publishEndpoint, IMapper mapper, ILogger logger)
+        public BasketApiController(
+            IMediator mediator,
+            IPublishEndpoint publishEndpoint,
+            IMapper mapper,
+            ILogger<BasketApiController> logger
+        )
         {
             _mediator = mediator;
             _publishEndpoint = publishEndpoint;
@@ -60,7 +65,7 @@ namespace Basket.Api.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Checkout([FromBody] BasketCheckoutV2 basketCheckout)
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
         {
             //get basket by username
             var query = new GetBasketByUserNameQuery(basketCheckout.Username);
@@ -71,11 +76,11 @@ namespace Basket.Api.Controllers
                 return BadRequest();  
             }
 
-            var eventMsg = _mapper.Map<BasketCheckoutEventV2>(basket);
+            var eventMsg = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
             eventMsg.TotalPrice = basket.TotalPrice;
             await _publishEndpoint.Publish(eventMsg);
 
-            _logger.LogInformation($"Basket published for {basket.UserName} with V2 endpoint");
+            _logger.LogInformation($"Basket published for {basket.UserName} with V1 endpoint");
 
             //remove from basket
             var deletedCMD = new DeleteBaskerByUserNameCommand(basket.UserName);

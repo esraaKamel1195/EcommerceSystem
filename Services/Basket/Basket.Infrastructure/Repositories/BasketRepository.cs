@@ -23,10 +23,10 @@ namespace Basket.Infrastructure.Repositories
             }
             return JsonConvert.DeserializeObject<ShoppingCart>(basket);
         }
+        
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart cart)
         {
             var basket = await _Rediscache.GetStringAsync(cart.UserName);
-            Console.WriteLine("Updating existing basket for user: " + await GetBasket(cart.UserName));
 
             if (basket != null)
             {
@@ -35,10 +35,15 @@ namespace Basket.Infrastructure.Repositories
             }
             else
             {
-                await _Rediscache.SetStringAsync(cart.UserName, JsonConvert.SerializeObject(cart));
+                await _Rediscache.SetStringAsync(
+                    cart.UserName, 
+                    JsonConvert.SerializeObject(cart)
+                );
+
                 return await GetBasket(cart.UserName);
             }
         }
+
         public async Task DeleteBasket(string username)
         {
             var basket = await _Rediscache.GetStringAsync(username);

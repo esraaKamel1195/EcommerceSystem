@@ -1,0 +1,4 @@
+1 - docker compose up
+2 - docker compose down
+3 - docker compose up --build
+4 - docker compose build --no-cache service/dll-name

@@ -74,7 +74,7 @@ namespace Catalog.Infrastructure.Repositories
                 catalogSpecParams.PageSize,
                 (int)totalItems,
                 data
-               );
+            );
         }
 
         public async Task<IEnumerable<ProductType>> GetAllTypes()
