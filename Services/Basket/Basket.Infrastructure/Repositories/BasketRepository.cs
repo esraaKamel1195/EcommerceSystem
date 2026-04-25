@@ -10,10 +10,11 @@ namespace Basket.Infrastructure.Repositories
     {
         private readonly IDistributedCache _Rediscache;
 
-        public BasketRepository(IDistributedCache redisCah)
+        public BasketRepository(IDistributedCache redisCache)
         {
-            _Rediscache = redisCah;
+            _Rediscache = redisCache;
         }
+
         public async Task<ShoppingCart> GetBasket(string username)
         {
             var basket = await _Rediscache.GetStringAsync(username);
@@ -28,20 +29,20 @@ namespace Basket.Infrastructure.Repositories
         {
             var basket = await _Rediscache.GetStringAsync(cart.UserName);
 
-            if (basket != null)
-            {
-                Console.WriteLine("Updating existing basket for user: " + await GetBasket(cart.UserName));
-                return await GetBasket(cart.UserName);
-            }
-            else
-            {
+            //if (basket != null)
+            //{
+            //    Console.WriteLine("Updating existing basket for user: " + await GetBasket(cart.UserName));
+            //    return await GetBasket(cart.UserName);
+            //}
+            //else
+            //{
                 await _Rediscache.SetStringAsync(
                     cart.UserName, 
                     JsonConvert.SerializeObject(cart)
                 );
 
                 return await GetBasket(cart.UserName);
-            }
+            //}
         }
 
         public async Task DeleteBasket(string username)
@@ -49,6 +50,7 @@ namespace Basket.Infrastructure.Repositories
             var basket = await _Rediscache.GetStringAsync(username);
             if(basket != null) 
             {
+                Console.WriteLine("try delete or remove basket");
                 await _Rediscache.RemoveAsync(basket);
             }
         }

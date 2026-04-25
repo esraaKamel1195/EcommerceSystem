@@ -61,6 +61,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eshop.Identity", "eshop.Ide
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{694A014C-EF94-4018-BC9C-D575B4DAF9CF}"
 	ProjectSection(SolutionItems) = preProject
+		API.Gateway\nginx\id-local.conf = API.Gateway\nginx\id-local.conf
+		API.Gateway\nginx\id-local.crt = API.Gateway\nginx\id-local.crt
+		API.Gateway\nginx\id-local.key = API.Gateway\nginx\id-local.key
 		API.Gateway\nginx\nginx.Dockerfile = API.Gateway\nginx\nginx.Dockerfile
 		API.Gateway\nginx\nginx.local.conf = API.Gateway\nginx\nginx.local.conf
 	EndProjectSection

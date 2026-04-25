@@ -17,12 +17,15 @@ internal static class HostingExtensions
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
-                options.IssuerUri = "https://localhost:9009";
+                options.IssuerUri = "http://localhost:9011";
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
+                options.KeyManagement.Enabled = false;
+                options.Authentication.CookieSameSiteMode = SameSiteMode.Lax;
             })
-            .AddTestUsers(TestUsers.Users).AddDeveloperSigningCredential(persistKey: true, filename: "tempkey.jwk");
+            .AddTestUsers(TestUsers.Users)
+            .AddDeveloperSigningCredential(persistKey: true, filename: "tempkey.jwk");
 
         // in-memory, code config
         isBuilder.AddInMemoryIdentityResources(Config.IdentityResources);
@@ -30,7 +33,8 @@ internal static class HostingExtensions
         isBuilder.AddInMemoryApiResources(Config.ApiResources);
         isBuilder.AddInMemoryClients(Config.Clients);
 
-
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
         // if you want to use server-side sessions: https://blog.duendesoftware.com/posts/20220406_session_management/
         // then enable it
         //isBuilder.AddServerSideSessions();
@@ -73,6 +77,7 @@ internal static class HostingExtensions
         app.UseIdentityServer();
         app.UseAuthorization();
         
+        app.MapDefaultControllerRoute();
         app.MapRazorPages()
             .RequireAuthorization();
 

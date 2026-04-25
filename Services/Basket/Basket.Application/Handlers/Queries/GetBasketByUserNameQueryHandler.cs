@@ -6,7 +6,8 @@ using MediatR;
 
 namespace Basket.Application.Handlers.Queries
 {
-    public class GetBasketByUserNameQueryHandler : IRequestHandler<GetBasketByUserNameQuery, ShoppingCartResponse>
+    public class GetBasketByUserNameQueryHandler : 
+        IRequestHandler<GetBasketByUserNameQuery, ShoppingCartResponse>
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;

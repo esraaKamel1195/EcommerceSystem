@@ -1,12 +1,24 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { Navbar } from '../core/components/navbar/navbar';
+import { Header } from '../core/components/header/header';
+// Import library module
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BasketService } from '../basket/basket-service';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar, Header, NgxSpinnerModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('ecommerce-store');
+  private readonly basket = inject(BasketService);
+
+  ngOnInit(): void {
+    const storedUserName = localStorage.getItem('basket_username');
+    if (storedUserName) {
+      this.basket.getBasket(storedUserName);
+    }
+  }
 }

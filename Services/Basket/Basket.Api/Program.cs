@@ -54,50 +54,50 @@ public class Program
 
         builder.Services.AddMassTransitHostedService();
 
-        var userPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
+        //var userPolicy = new AuthorizationPolicyBuilder()
+        //    .RequireAuthenticatedUser()
+        //    .Build();
 
-        builder.Services.AddControllers(config =>
-        {
-            config.Filters.Add(new AuthorizeFilter(userPolicy));
-        });
+        //builder.Services.AddControllers(config =>
+        //{
+        //    config.Filters.Add(new AuthorizeFilter(userPolicy));
+        //});
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
-                options.RequireHttpsMetadata = true; // Set to true in production
+        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options => {
+        //        options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
+        //        options.RequireHttpsMetadata = true; // Set to true in production
 
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://localhost:9009",
-                    ValidateAudience = true,
-                    ValidAudience = "Basket",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
-                };
+        //        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        //        {
+        //            ValidateIssuer = true,
+        //            ValidIssuer = "https://localhost:9009",
+        //            ValidateAudience = true,
+        //            ValidAudience = "Basket",
+        //            ValidateLifetime = true,
+        //            ValidateIssuerSigningKey = true,
+        //            ClockSkew = TimeSpan.Zero,
+        //        };
 
-                // add this to docker to host communication
-                options.BackchannelHttpHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                };
+        //        // add this to docker to host communication
+        //        options.BackchannelHttpHandler = new HttpClientHandler
+        //        {
+        //            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        //        };
 
-                //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        Log.Error("Authentication failed: {Error}", context.Exception.Message);
-                        Console.WriteLine($"Authentication failed");
-                        Console.WriteLine($"Exception: {context.Exception}");
-                        Console.WriteLine($"Authority: {options.Authority}");
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+        //        //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
+        //        options.Events = new JwtBearerEvents
+        //        {
+        //            OnAuthenticationFailed = context =>
+        //            {
+        //                Log.Error("Authentication failed: {Error}", context.Exception.Message);
+        //                Console.WriteLine($"Authentication failed");
+        //                Console.WriteLine($"Exception: {context.Exception}");
+        //                Console.WriteLine($"Authority: {options.Authority}");
+        //                return Task.CompletedTask;
+        //            }
+        //        };
+        //    });
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -200,7 +200,7 @@ public class Program
                           .AllowAnyHeader();
                 });
             }
-            );
+        );
 
         var app = builder.Build();
 
@@ -220,6 +220,7 @@ public class Program
             });
         }
 
+        //app.UseAuthentication();
         app.UseAuthorization();
         app.UseCors("*");
 

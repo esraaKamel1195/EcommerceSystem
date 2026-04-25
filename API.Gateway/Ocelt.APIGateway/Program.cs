@@ -24,9 +24,9 @@ namespace Ocelt.APIGateway
 
             var authSchema = "EShoppingGatewayAuthSchema";
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
+                .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
+                    options.Authority = "https://host.docker.internal:9011"; // IdentityServer URL
                     options.Audience = "EShoppingGateway"; // API resource name defined in IdentityServer
                     options.RequireHttpsMetadata = false; // only for dev
 
@@ -36,7 +36,7 @@ namespace Ocelt.APIGateway
                         ValidAudience = "EShoppingGateway",
                         ValidateIssuer = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://host.docker.internal:9009",
+                        ValidIssuer = "https://host.docker.internal:9011",
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero // Adjust as needed
                     };
@@ -83,7 +83,9 @@ namespace Ocelt.APIGateway
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello ocelot"); });
+                endpoints.MapGet("/", async context => { 
+                    await context.Response.WriteAsync("Hello ocelot"); 
+                });
             });
 
             await app.UseOcelot();

@@ -35,7 +35,7 @@ services:
      - "ASPNETCORE_HTTP_PORTS=8000"   # ← ensure this exists
      - "ASPNETCORE_URLS=http://+:8000" # ← or this (use one, not both)
      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
-     - Auth__Authority="https://host.docker.internal:9009"
+     - Auth__Authority="http://localhost:9011"
      - Auth__RequireHttpsMetadata=false
      - Auth__Audience=Catalog
 

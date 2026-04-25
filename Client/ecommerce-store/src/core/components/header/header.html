@@ -1,0 +1,41 @@
+<!-- <p>header works!</p> -->
+<ng-container>
+  <!-- Header Section -->
+  <section class="bg-light border-bottom py-3 mb-4">
+    <div
+      class="container d-flex flex-column flex-sm-row align-items-center justify-content-between"
+    >
+    <!-- Left Side: Page Title -->
+      <div class="d-flex align-items-center mb-2 mb-sm-0">
+        <i class="fa fa-triangle-exclamation fa-lg text-danger me-2"></i>
+        <h2 class="h5 fw-semibold mb-0 text-dark">
+          Store
+        </h2>
+      </div>
+
+      <!-- Right Side: Breadcrumb -->
+      <!-- @if (crumbs$ | async as crumbs) { -->
+      <nav aria-label="breadcrumb" *ngIf="crumbs$ | async as crumbs">
+          <ol class="breadcrumb mb-0">
+            @for (crumb of crumbs; track $index) {
+              <li
+                class="breadcrumb-item"
+                [class.active]="crumb.current"
+                [attr.aria-current]="crumb.current ? 'page' : null"
+              >
+                @if (!crumb.current) {
+                  <a [routerLink]="crumb.url">
+                    {{ crumb.label }}
+                  </a>
+                }
+                @if (crumb.current) {
+                  <span>{{ crumb.label }}</span>
+                }
+              </li>
+            }
+          </ol>
+        </nav>
+      <!-- } -->
+    </div>
+  </section>
+</ng-container>

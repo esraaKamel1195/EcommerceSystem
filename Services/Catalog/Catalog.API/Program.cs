@@ -25,46 +25,46 @@ public class Program
         builder.Host.UseSerilog(Logging.ConfigureLogger);
 
         builder.Services.AddControllers();
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
-                options.RequireHttpsMetadata = true; // Set to true in production
+        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options => {
+        //        options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
+        //        options.RequireHttpsMetadata = true; // Set to true in production
 
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://localhost:9009",
-                    ValidateAudience = true,
-                    ValidAudience = "Catalog",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
-                };
+        //        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        //        {
+        //            ValidateIssuer = true,
+        //            ValidIssuer = "https://localhost:9009",
+        //            ValidateAudience = true,
+        //            ValidAudience = "Catalog",
+        //            ValidateLifetime = true,
+        //            ValidateIssuerSigningKey = true,
+        //            ClockSkew = TimeSpan.Zero,
+        //        };
 
-                // add this to docker to host communication
-                options.BackchannelHttpHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                };
+        //        // add this to docker to host communication
+        //        options.BackchannelHttpHandler = new HttpClientHandler
+        //        {
+        //            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        //        };
 
-                //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        Log.Error("Authentication failed: {Error}", context.Exception.Message);
-                        Console.WriteLine($"Authentication failed");
-                        Console.WriteLine($"Exception: {context.Exception}");
-                        Console.WriteLine($"Authority: {options.Authority}");
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+        //        //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
+        //        options.Events = new JwtBearerEvents
+        //        {
+        //            OnAuthenticationFailed = context =>
+        //            {
+        //                Log.Error("Authentication failed: {Error}", context.Exception.Message);
+        //                Console.WriteLine($"Authentication failed");
+        //                Console.WriteLine($"Exception: {context.Exception}");
+        //                Console.WriteLine($"Authority: {options.Authority}");
+        //                return Task.CompletedTask;
+        //            }
+        //        };
+        //    });
 
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
-        });
+        //builder.Services.AddAuthorization(options =>
+        //{
+        //    options.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "catalogapi.read"));
+        //});
 
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
@@ -81,14 +81,14 @@ public class Program
         builder.Services.AddScoped<IBrandRepository, ProductRepository>();
         builder.Services.AddScoped<ITypeRepository, ProductRepository>();
 
-        var userPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
+        //var userPolicy = new AuthorizationPolicyBuilder()
+        //    .RequireAuthenticatedUser()
+        //    .Build();
 
-        builder.Services.AddControllers(config =>
-        {
-            config.Filters.Add(new AuthorizeFilter(userPolicy));
-        });
+        //builder.Services.AddControllers(config =>
+        //{
+        //    config.Filters.Add(new AuthorizeFilter(userPolicy));
+        //});
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -167,7 +167,8 @@ public class Program
             options.AddPolicy("AllowAll", policy =>
                 policy.AllowAnyOrigin()
                  .AllowAnyMethod()
-                 .AllowAnyHeader());
+                 .AllowAnyHeader()
+            );
         });
 
         var app = builder.Build(); 
@@ -187,7 +188,7 @@ public class Program
 
         app.UseCors("AllowAll");
 
-        app.UseAuthentication();
+        //app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();

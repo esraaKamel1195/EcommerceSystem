@@ -1,0 +1,113 @@
+<!-- app.component.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">My App</a>
+
+    <!-- Collapse toggler (ngx-bootstrap CollapseDirective) -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isNavbarCollapsed = !isNavbarCollapsed"
+      [attr.aria-expanded]="!isNavbarCollapsed"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" [collapse]="isNavbarCollapsed" [isAnimated]="true">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Home</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/store" routerLinkActive="active"> Products </a>
+        </li>
+
+        <!-- Products dropdown (ngx-bootstrap BsDropdownDirective) -->
+        <!-- <li class="nav-item dropdown"
+            dropdown
+            #productsDropdown="bs-dropdown">
+          <a class="nav-link dropdown-toggle"
+             dropdownToggle
+             role="button"
+             [class.active]="productsDropdown.isOpen">
+            Products
+          </a>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+            <li role="menuitem">
+              <a class="dropdown-item" routerLink="/products/dashboard">Dashboard</a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" routerLink="/products/components">Components</a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" routerLink="/products/scheduler">Scheduler</a>
+            </li>
+          </ul>
+        </li> -->
+
+        <!-- Docs dropdown -->
+        <!-- <li class="nav-item dropdown" dropdown>
+          <a class="nav-link dropdown-toggle" dropdownToggle role="button"> Docs </a>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+            <li role="menuitem">
+              <a class="dropdown-item" routerLink="/docs/start">Getting started</a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" routerLink="/docs/api">API reference</a>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+              <a class="dropdown-item" href="https://github.com" target="_blank">
+                GitHub <span class="badge bg-secondary">v21</span>
+              </a>
+            </li>
+          </ul>
+        </li> -->
+
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLink="/pricing" routerLinkActive="active">Pricing</a>
+        </li> -->
+      </ul>
+
+      <ul class="navbar-nav">
+        @if (!isUserAuthenticated()) {
+          <li lass="nav-item me-3">
+            <a class="nav-link" routerLink="/account/login">Login</a>
+            <!-- <a class="nav-link" (click)="login()">Login</a> -->
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="/account/register">Signup</a>
+          </li>
+        }
+
+        @let basket = basketService.basketSource$ | async;
+        @if (isUserAuthenticated()) {
+          <li lass="nav-item me-3">
+            <a class="nav-link" role="button" routerLink="/basket">
+              <i class="fa fa-shopping-cart"></i>
+              @if (basket) {
+                <span class="badge bg-danger">
+                  {{ getBasketItemsCount(basket.items) }}
+                </span>
+              }
+            </a>
+          </li>
+        }
+
+        @if (isUserAuthenticated()) {
+          <li class="nav-item me-3">
+            <a class="nav-link" role="button" (click)="logout()"> Logout </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
