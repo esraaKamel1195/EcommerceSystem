@@ -41,7 +41,7 @@ export class StoreService {
     return this.http.get<IResponseDto<IProduct[]>>(`${this.base_url}/GetAllProducts`, { params, headers: httpOptions.headers });
   }
 
-  getAallBrands(): Observable<IBrands[]> {
+  getAllBrands(): Observable<IBrands[]> {
      const httpOptions = {
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export class StoreService {
     return this.http.get<IBrands[]>(`${this.base_url}/GetAllBrands`, { headers: httpOptions.headers });
   }
 
-  getAallTypes(): Observable<ITypes[]> {
+  getAllTypes(): Observable<ITypes[]> {
      const httpOptions = {
       headers: {
         'Content-Type': 'application/json',

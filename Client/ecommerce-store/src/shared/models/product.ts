@@ -7,14 +7,15 @@ export interface IProduct {
   brands: IBrands;
   types: ITypes;
   price: number;
+  [key: string]: any;  // Add this line
 }
 
 export interface IBrands {
-  name: string;
   id: string;
+  name: string;
 }
 
 export interface ITypes {
-  name: string;
   id: string;
+  name: string;
 }

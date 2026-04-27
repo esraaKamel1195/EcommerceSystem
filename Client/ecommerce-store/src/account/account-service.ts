@@ -41,13 +41,12 @@ export class AccountService {
   }
 
   get authorizationHeaderValue(): string {
-    console.log(this.token);
-    console.log(this.access_token);
-    return `${this.token} ${this.access_token}`;
+    return `${localStorage.getItem('token_type')} ${localStorage.getItem('token')}`;
   }
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('token_type');
     this.currentUserSource.next(null);
     this.router.navigateByUrl('/');
   }
@@ -58,6 +57,8 @@ export class AccountService {
       this.currentUserSource.next(this.checkUser(user));
       this.token = user.token_type;
       this.access_token = user.access_token;
+      localStorage.setItem('token', this.access_token);
+      localStorage.setItem('token_type', this.token);
       return user;
     });
   };
@@ -68,8 +69,6 @@ export class AccountService {
   };
 
   private checkUser = (user: User): boolean => {
-    console.log('inside check user');
-    console.log(user);
     return !!user && !user.expired;
   };
 }

@@ -8,7 +8,8 @@ import { SigninRedirectCallbackComponent } from '../account/signin-redirect-call
 import { AuthGuard } from '../core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: Home, pathMatch: 'full', data: { breadcrumb: 'Home' } },
+  // { path: '', component: Home, pathMatch: 'full', data: { breadcrumb: 'Home' } },
+  { path: '', redirectTo: '/store', pathMatch: 'full', data: { breadcrumb: 'Store' } },
   {
     path: 'store',
     loadChildren: () => import('../store/store.route').then((m) => m.storeRoutes),
