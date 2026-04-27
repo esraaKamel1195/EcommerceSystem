@@ -26,17 +26,19 @@ namespace Ocelt.APIGateway
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://host.docker.internal:9011"; // IdentityServer URL
+                    options.Authority = "https://id-local.eshopping.com:44344/"; // IdentityServer URL
                     options.Audience = "EShoppingGateway"; // API resource name defined in IdentityServer
                     options.RequireHttpsMetadata = false; // only for dev
 
+                    // Fetch keys from internal Docker hostname instead
+                    options.MetadataAddress = "http://identityserver:9011/.well-known/openid-configuration";
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
                         ValidateAudience = true,
                         ValidAudience = "EShoppingGateway",
                         ValidateIssuer = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://host.docker.internal:9011",
+                        ValidIssuer = "https://id-local.eshopping.com:44344/",
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero // Adjust as needed
                     };

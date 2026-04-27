@@ -12,7 +12,7 @@ services:
       - discount.api
       - ordering.api
     ports:
-      - "9300:9100"
+      - "44344:443"
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -33,9 +33,10 @@ services:
      - "DatabaseSettings__BrandsCollectionName=Brands"
      - "DatabaseSettings__TypesCollectionName=Types"
      - "ASPNETCORE_HTTP_PORTS=8000"   # ← ensure this exists
+     - ASPNETCORE_ENVIRONMENT=Development  # 👈 add this
      - "ASPNETCORE_URLS=http://+:8000" # ← or this (use one, not both)
      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
-     - Auth__Authority="http://localhost:9011"
+     - Auth__Authority="https://id-local.eshopping.com:44344/"
      - Auth__RequireHttpsMetadata=false
      - Auth__Audience=Catalog
 
@@ -128,6 +129,8 @@ services:
       - "GrpcSettings__DiscountUrl=http://localhost:8002"
       - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
       - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+      - Auth__Authority="http://identityserver:9011/"
+      - Auth__RequireHttpsMetadata=false
   
   portainer:
     image: portainer/portainer-ce

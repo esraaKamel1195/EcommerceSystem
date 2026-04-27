@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { IBrands, IProduct, ITypes } from '../../shared/models/product';
 import { IResponseDto } from '../../shared/models/response';
 import { StoreParams } from '../../shared/models/storeParams';
+import { AccountService } from '../../account/account-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StoreService {
-  private readonly base_url = 'http://localhost:8010/Catalog';
+  private readonly base_url = 'https://id-local.eshopping.com:44344/catalog/api/v1/Catalog';
+  // private readonly base_url = 'http://localhost:8010/Catalog';
   private readonly http = inject(HttpClient);
+  private readonly accountService = inject(AccountService);
 
   getAllProducts(storeParams: StoreParams): Observable<IResponseDto<IProduct[]>> {
     let params = new HttpParams();
@@ -29,18 +32,42 @@ export class StoreService {
     params = params.append('PageIndex', storeParams.pageNumber.toString());
     params = params.append('PageSize', storeParams.pageSize.toString());
 
-    return this.http.get<IResponseDto<IProduct[]>>(`${this.base_url}/GetAllProducts`, { params });
+    const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+    return this.http.get<IResponseDto<IProduct[]>>(`${this.base_url}/GetAllProducts`, { params, headers: httpOptions.headers });
   }
 
   getAallBrands(): Observable<IBrands[]> {
-    return this.http.get<IBrands[]>(`${this.base_url}/GetAllBrands`);
+     const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+    return this.http.get<IBrands[]>(`${this.base_url}/GetAllBrands`, { headers: httpOptions.headers });
   }
 
   getAallTypes(): Observable<ITypes[]> {
-    return this.http.get<ITypes[]>(`${this.base_url}/GetAllTypes`);
+     const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+    return this.http.get<ITypes[]>(`${this.base_url}/GetAllTypes`, { headers: httpOptions.headers });
   }
 
   getProduct(id: string): Observable<IProduct> {
-    return this.http.get<IProduct>(`${this.base_url}/GetProductById/${id}`);
+     const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+    return this.http.get<IProduct>(`${this.base_url}/GetProductById/${id}`, { headers: httpOptions.headers });
   }
 }

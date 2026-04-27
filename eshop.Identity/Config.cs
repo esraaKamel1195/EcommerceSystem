@@ -94,7 +94,9 @@ public static class Config
                 AllowedScopes = {
                      IdentityServerConstants.StandardScopes.OpenId,
                      IdentityServerConstants.StandardScopes.Profile,
-                     "eshoppinggateway"
+                     "eshoppinggateway",
+                     "basketapi",
+                     "catalogapi.read"
                 },
                 AllowAccessTokensViaBrowser = true,
                 AccessTokenLifetime = 3600,

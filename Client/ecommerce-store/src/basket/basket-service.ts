@@ -10,7 +10,9 @@ import { AccountService } from '../account/account-service';
   providedIn: 'root',
 })
 export class BasketService {
-  private readonly base_url = 'http://localhost:8010/Basket';
+  private readonly base_url = 'https://id-local.eshopping.com:44344/basket/api/v1/BasketApi';
+  // private readonly base_url = 'http://localhost:8010/Basket';
+
   private basketSource = new BehaviorSubject<Basket | null>(null);
   basketSource$ = this.basketSource.asObservable();
 
@@ -20,11 +22,18 @@ export class BasketService {
   constructor(
     private http: HttpClient,
     private accountService: AccountService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getBasket(userName: string) {
-    return this.http.get<Basket>(`${this.base_url}/GetBasket/${userName}`).subscribe({
+    const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+
+    return this.http.get<Basket>(`${this.base_url}/GetBasket/${userName}`, httpOptions).subscribe({
       next: (basket) => {
         this.basketSource.next(basket);
         this.calculateTotals();
@@ -34,7 +43,14 @@ export class BasketService {
   }
 
   setBasket(basket: Basket) {
-    return this.http.post<Basket>(`${this.base_url}/CreateBasket`, basket).subscribe({
+    const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
+      },
+    };
+
+    return this.http.post<Basket>(`${this.base_url}/CreateBasket`, basket, httpOptions).subscribe({
       next: (response) => {
         this.basketSource.next(response);
         this.calculateTotals();
@@ -119,13 +135,21 @@ export class BasketService {
   }
 
   deleteBasket(basket: Basket) {
-    return this.http.delete(`${this.base_url}/DeleteBasket/${basket.userName}`).subscribe({
-      next: () => {
-        this.basketSource.next(null);
-        this.basketTotal.next(null);
+    const httpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: this.accountService.authorizationHeaderValue,
       },
-      error: (err) => console.log(err),
-    });
+    };
+    return this.http
+      .delete(`${this.base_url}/DeleteBasket/${basket.userName}`, httpOptions)
+      .subscribe({
+        next: () => {
+          this.basketSource.next(null);
+          this.basketTotal.next(null);
+        },
+        error: (err) => console.log(err),
+      });
   }
 
   checkoutBasket(basket: Basket) {
@@ -136,7 +160,7 @@ export class BasketService {
       },
     };
 
-    return this.http.post(`${this.base_url}/CheckoutV2`, basket, httpOptions).subscribe({
+    return this.http.post(`${this.base_url}/Checkout`, basket, httpOptions).subscribe({
       next: () => {
         this.basketSource.next(null);
         this.basketTotal.next(null);

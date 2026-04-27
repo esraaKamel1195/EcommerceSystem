@@ -10,9 +10,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 }
@@ -26,9 +26,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetProductById/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -41,9 +41,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetAllProducts",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -56,9 +56,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetAllBrands",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -71,9 +71,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetAllTypes",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
@@ -86,9 +86,9 @@
           "Port": 8000
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "UpstreamPathTemplate": "/Catalog/GetProductsByBrandName/{brand}",
       "UpstreamHttpMethod": [ "GET" ]
     },
@@ -96,9 +96,9 @@
     {
       "DownstreamPathTemplate": "/api/v1/BasketApi/GetBasket/{userName}",
       "DownstreamScheme": "http",
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",
@@ -135,9 +135,9 @@
     {
       "DownstreamPathTemplate": "/api/v1/BasketApi/Checkout",
       "DownstreamScheme": "http",
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer"
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "host.docker.internal",

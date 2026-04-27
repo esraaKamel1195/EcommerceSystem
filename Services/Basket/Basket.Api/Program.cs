@@ -8,6 +8,7 @@ using Discount.Grpc.Protos;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -54,50 +55,52 @@ public class Program
 
         builder.Services.AddMassTransitHostedService();
 
-        //var userPolicy = new AuthorizationPolicyBuilder()
-        //    .RequireAuthenticatedUser()
-        //    .Build();
+        var userPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
 
-        //builder.Services.AddControllers(config =>
-        //{
-        //    config.Filters.Add(new AuthorizeFilter(userPolicy));
-        //});
+        builder.Services.AddControllers(config =>
+        {
+            config.Filters.Add(new AuthorizeFilter(userPolicy));
+        });
 
-        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //    .AddJwtBearer(options => {
-        //        options.Authority = "https://host.docker.internal:9009"; // IdentityServer URL
-        //        options.RequireHttpsMetadata = true; // Set to true in production
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "http://identityserver:9011/"; // IdentityServer URL
+                options.RequireHttpsMetadata = false; // Set to true in production
+                options.MetadataAddress = "http://identityserver:9011/.well-known/openid-configuration";
 
-        //        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        //        {
-        //            ValidateIssuer = true,
-        //            ValidIssuer = "https://localhost:9009",
-        //            ValidateAudience = true,
-        //            ValidAudience = "Basket",
-        //            ValidateLifetime = true,
-        //            ValidateIssuerSigningKey = true,
-        //            ClockSkew = TimeSpan.Zero,
-        //        };
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "http://identityserver:9011/",
+                    ValidateAudience = true,
+                    ValidAudience = "Basket",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
+                };
 
-        //        // add this to docker to host communication
-        //        options.BackchannelHttpHandler = new HttpClientHandler
-        //        {
-        //            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-        //        };
+                // add this to docker to host communication
+                options.BackchannelHttpHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                };
 
-        //        //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
-        //        options.Events = new JwtBearerEvents
-        //        {
-        //            OnAuthenticationFailed = context =>
-        //            {
-        //                Log.Error("Authentication failed: {Error}", context.Exception.Message);
-        //                Console.WriteLine($"Authentication failed");
-        //                Console.WriteLine($"Exception: {context.Exception}");
-        //                Console.WriteLine($"Authority: {options.Authority}");
-        //                return Task.CompletedTask;
-        //            }
-        //        };
-        //    });
+                //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Log.Error("Authentication failed: {Error}", context.Exception.Message);
+                        Console.WriteLine($"Authentication failed");
+                        Console.WriteLine($"Exception: {context.Exception}");
+                        Console.WriteLine($"Authority: {options.Authority}");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -207,20 +210,37 @@ public class Program
         //app.MapDefaultEndpoints();
 
         // Configure the HTTP request pipeline.
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
+
+
+        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            app.MapOpenApi();
+            app.Use((ctx, next) =>
             {
-                options.SwaggerEndpoint("v1/swagger.json", "Basket API V1");
-                options.SwaggerEndpoint("v2/swagger.json", "Basket API V2");
-                options.RoutePrefix = "swagger";
+                if (ctx.Request.Headers.TryGetValue("X-Forwarded-Prefix", out var prefix) &&
+                    !string.IsNullOrEmpty(prefix))
+                {
+                    ctx.Request.PathBase = prefix.ToString(); // e.g., "/basket"
+                }
+                return next();
+            });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                // Use *relative* URLs so the /basket prefix is preserved by the browser
+                c.SwaggerEndpoint("v1/swagger.json", "Basket.API v1");   // no leading '/'
+                c.SwaggerEndpoint("v2/swagger.json", "Basket.API v2");   // no leading '/'
+                c.RoutePrefix = "swagger";
             });
         }
 
-        //app.UseAuthentication();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.UseCors("*");
 
