@@ -1,7 +1,8 @@
 ﻿using Discount.Grpc.Protos;
+using Grpc.Core;
 using Microsoft.Extensions.Logging;
 
-namespace Basket.Application.GRPCServices
+namespace Catalog.Application.GRPCServices
 {
     public class DiscountGrpcService
     {
@@ -23,12 +24,31 @@ namespace Basket.Application.GRPCServices
                 GetDiscountRequest discountRequest = new GetDiscountRequest { ProductName = productName };
                 return await _discountProtoServiceClient.GetDiscountAsync(discountRequest);
             }
-            catch (Grpc.Core.RpcException ex)
+            //catch (RpcException ex)
+            //{
+            //    // Log the exception or handle it as needed
+            //    Console.WriteLine($"Discount for product '{productName}' not found: {ex.Message}");
+            //    _logger.LogInformation($"Discount get discount exception '{ex}' ");
+            //    return null; // Return null or a default value if the discount is not found
+            //}
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
             {
-                // Log the exception or handle it as needed
-                Console.WriteLine($"Discount for product '{productName}' not found: {ex.Message}");
-                _logger.LogInformation($"Discount get discount exception '{ex}' ");
-                return null; // Return null or a default value if the discount is not found
+                // No discount exists — return null, no exception, no fake coupon
+                _logger.LogInformation("No discount found for product '{ProductName}'.", productName);
+                return null;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable)
+            {
+                // Service is down — log warning, return null to not block the flow
+                _logger.LogWarning("Discount service unavailable for product '{ProductName}'.", productName);
+                return null;
+            }
+            catch (RpcException ex)
+            {
+                // Unexpected gRPC error — log it properly as an error
+                _logger.LogError(ex, "Unexpected gRPC error fetching discount for '{ProductName}'. StatusCode: {StatusCode}",
+                    productName, ex.StatusCode);
+                return null;
             }
         }
 

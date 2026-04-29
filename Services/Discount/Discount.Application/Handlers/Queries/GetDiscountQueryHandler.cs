@@ -21,6 +21,7 @@ namespace Discount.Application.Handlers.Queries
             _discountRepository = discountRepository;
             _logger = logger;
         }
+
         public async Task<CouponModel> Handle(GetDiscountQuery request, CancellationToken cancellationToken)
         {
             var coupon = await _discountRepository.GetDiscount(request.ProductName);

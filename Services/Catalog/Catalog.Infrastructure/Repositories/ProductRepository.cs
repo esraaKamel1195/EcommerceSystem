@@ -23,16 +23,22 @@ namespace Catalog.Infrastructure.Repositories
         {
             return await _context.Products.Find(p => p.Name == name).ToListAsync();
         }
+
         public async Task<Product> CreateProduct(Product product)
         {
             await _context.Products.InsertOneAsync(product);
             return product;
         }
-        public async Task<bool> UpdateProduct(Product product)
+
+        public async Task<Product> UpdateProduct(Product product)
         {
             var UpdatedProduct = await _context.Products.ReplaceOneAsync(p => p.Id == product.Id, product);
-            return UpdatedProduct.IsAcknowledged && UpdatedProduct.ModifiedCount > 0;
+            //if(UpdatedProduct.IsAcknowledged && UpdatedProduct.ModifiedCount > 0)
+            //{
+                return await _context.Products.Find(p => p.Id == product.Id).FirstOrDefaultAsync();
+            //} 
         }
+
         public async Task<bool> DeleteProduct(string id)
         {
             var deletedProduct = await _context.Products.DeleteOneAsync(p => p.Id == id);

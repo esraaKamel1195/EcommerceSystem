@@ -13,7 +13,7 @@ namespace Catalog.Core.Repositories
         Task<IEnumerable<Product>> GetProductsByBrandId(string brandName);
         Task<IEnumerable<Product>> GetProductsByTypeId(string typeName);
         Task<Product> CreateProduct(Product product);
-        Task<bool> UpdateProduct(Product product);
+        Task<Product> UpdateProduct(Product product);
         Task<bool> DeleteProduct(string id);
         //object GetAllWithIncludesAsync(List<string> list);
     }

@@ -1,15 +1,11 @@
-﻿using Catalog.Core.Entities;
+﻿using Catalog.Application.Responses;
+using Catalog.Core.Entities;
 using MediatR;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.Application.Commands
 {
-    public class UpdateProductCommand: IRequest<bool>
+    public class UpdateProductCommand: IRequest<ProductResponseDto>
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
@@ -20,7 +16,10 @@ namespace Catalog.Application.Commands
         public string ImageFile { get; set; }
         [BsonRepresentation(MongoDB.Bson.BsonType.Decimal128)]
         public decimal Price { get; set; }
+        public decimal PriceAfterDiscount { get; set; }
         public ProductBrand Brands { get; set; }
         public ProductType Types { get; set; }
+        public bool HasDiscount { get; set; } = false;
+        public int DiscountAmount { get; set; } = 0;
     }
 }

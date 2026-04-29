@@ -1,5 +1,4 @@
-﻿
-namespace EventBus.Messages.Common
+﻿namespace EventBus.Messages.Common
 {
     public class EventBusConstant
     {

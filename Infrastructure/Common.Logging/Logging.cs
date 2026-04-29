@@ -23,7 +23,7 @@ namespace Common.Logging
 
             if (context.HostingEnvironment.IsDevelopment())
             {
-                loggerConfiguration.MinimumLevel.Override("Catelog", LogEventLevel.Debug);
+                loggerConfiguration.MinimumLevel.Override("Catalog", LogEventLevel.Debug);
                 loggerConfiguration.MinimumLevel.Override("Basket", LogEventLevel.Debug);
                 loggerConfiguration.MinimumLevel.Override("Discount", LogEventLevel.Debug);
                 loggerConfiguration.MinimumLevel.Override("Ordering", LogEventLevel.Debug);

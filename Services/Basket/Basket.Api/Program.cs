@@ -21,7 +21,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+        //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
         var builder = WebApplication.CreateBuilder(args);
         //builder.AddServiceDefaults();

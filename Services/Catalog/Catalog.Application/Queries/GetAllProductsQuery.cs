@@ -9,8 +9,8 @@ namespace Catalog.Application.Queries
         public CatalogSpecParams SpecParams { get; set; }
 
         public GetAllProductsQuery(CatalogSpecParams specParams)
-        {  
-            SpecParams = specParams; 
+        {
+            SpecParams = specParams;
         }
     }
 }

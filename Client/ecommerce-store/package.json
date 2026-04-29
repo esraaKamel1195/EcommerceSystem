@@ -35,6 +35,8 @@
     "ngx-bootstrap": "^21.0.1",
     "ngx-spinner": "^21.1.0",
     "oidc-client": "^1.11.5",
+    "primeicons": "^7.0.0",
+    "primeng": "^21.1.6",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xng-breadcrumb": "^15.0.0"

@@ -120,27 +120,12 @@
               <table class="table align-middle text-center mb-0 table-striped">
                 <thead class="table-light text-uppercase">
                   <tr>
-                    @for (column of leftFixedColumns(); track column.field; let i = $index) {
-                      @if (column.visible !== false) {
-                      <th
-                        scope="col"
-                        cdkDrag
-                        cdkDragHandle
-                        [style.width.px]="column.width"
-                        [style.min-width.px]="column.width"
-                        style="cursor: move"
-                        (click)="sort(column.sortedBy === 'asc' ? 'desc' : 'asc', column, $event)"
-                        (contextmenu)="openContextMenu($event, column)"
-                      >
-                        Image
-                      </th>
-                      <th scope="col">Product</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Brand</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Action</th>
-                      }
-                    }
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -162,8 +147,14 @@
                     <td>{{ item.brands?.name }}</td>
                     <td>{{ item.types?.name }}</td>
                     <td>
+                      <button class="btn btn-primary btn-sm" (click)="addItemToBasket(item)">
+                        <i class="fa fa-cart-plus"></i>
+                      </button>
+                      <button class="btn btn-sm" [routerLink]="['/store', item?.id]">
+                        <i class="fa fa-eye"></i>
+                      </button>
                       <button class="btn btn-danger btn-sm" (click)="remove(item)">
-                        <i class="fa fa-trash"></i> Remove
+                        <i class="fa fa-trash"></i>
                       </button>
                     </td>
                   </tr>

@@ -18,10 +18,12 @@ namespace Discount.Application.Handlers.Commands
         public CreateDiscountCouponCommandHandler
         (
             IDiscountRepository discountRepository,
+            IMapper mapper,
             ILogger<GetDiscountQueryHandler> logger
         )
         {
             _discountRepository = discountRepository;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -33,9 +35,9 @@ namespace Discount.Application.Handlers.Commands
               Description = request.Description,
               Amount = request.Amount
             };
-            await _discountRepository.CreateDiscount(coupon);
+            var cretedCoupon = await _discountRepository.CreateDiscount(coupon);
             _logger.LogInformation($"Coupon for the {request.ProductName} is successfully created");
-            var couponModel = _mapper.Map<CouponModel>(coupon);
+            var couponModel = _mapper.Map<CouponModel>(cretedCoupon);
 
             return couponModel;
         }

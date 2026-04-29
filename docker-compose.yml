@@ -32,11 +32,13 @@ services:
      - "DatabaseSettings__ProductsCollectionName=Products"
      - "DatabaseSettings__BrandsCollectionName=Brands"
      - "DatabaseSettings__TypesCollectionName=Types"
+     - "GrpcSettings__DiscountUrl=http://discount.api:8080"
      - "ASPNETCORE_HTTP_PORTS=8000"   # ← ensure this exists
      - ASPNETCORE_ENVIRONMENT=Development  # 👈 add this
      - "ASPNETCORE_URLS=http://+:8000" # ← or this (use one, not both)
      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
-     - Auth__Authority="https://id-local.eshopping.com:44344/"
+     # - Auth__Authority="https://id-local.eshopping.com:44344/"
+     - Auth__Authority="http://identityserver:9011/"
      - Auth__RequireHttpsMetadata=false
      - Auth__Audience=Catalog
 
@@ -126,7 +128,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8000
       - "CacheSettings__connectionString=basketdb:6379"
-      - "GrpcSettings__DiscountUrl=http://localhost:8002"
+      - "GrpcSettings__DiscountUrl=http://discount.api:8080"
       - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
       - "ElasticConfiguration__Uri=http://elasticsearch:9200"
       - Auth__Authority="http://identityserver:9011/"
@@ -158,7 +160,7 @@ services:
            condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8002;http://+:8080  # ← UPDATE THIS
+      - ASPNETCORE_URLS=http://+:8000;http://+:8080  # ← UPDATE THIS
       - "DatabaseSettings__ConnectionString=Host=discountdb;Port=5432;Database=discountdb;Username=admin;Password=password@123"
       - "ElasticConfiguration__Uri=http://elasticsearch:9200"
 

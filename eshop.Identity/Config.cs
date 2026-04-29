@@ -21,6 +21,7 @@ public static class Config
             new ApiScope("catalogapi.read"),
             new ApiScope("catalogapi.write"),
             new ApiScope("eshoppinggateway"),
+            //new ApiScope("discountapi"),
         };
 
     public static IEnumerable<ApiResource> ApiResources =>
@@ -63,6 +64,16 @@ public static class Config
                 ClientSecrets = { new Secret("49C1B8E1-0C79-4A89-A3D6-A37998FB86B0".Sha256())},
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 AllowedScopes = { "basketapi" },
+                RequirePkce = true,
+                RequireClientSecret = true,
+            },
+            new Client
+            {
+                ClientId = "DiscountClient",
+                ClientName = "Discount Client",
+                ClientSecrets = { new Secret("49C1B8E1-0C79-4A89-A3D6-A37998FB86B0".Sha256())},
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                AllowedScopes = { "discountapi" },
                 RequirePkce = true,
                 RequireClientSecret = true,
             },

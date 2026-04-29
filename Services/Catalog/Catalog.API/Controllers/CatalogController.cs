@@ -134,9 +134,9 @@ namespace Catalog.API.Controllers
 
         [HttpPut]
         [Route("UpdateProduct")]
-        public async Task<ActionResult<bool>> UpdateProduct([FromBody] UpdateProductCommand updateProductCommand)
+        public async Task<ActionResult<ProductResponseDto>> UpdateProduct([FromBody] UpdateProductCommand updateProductCommand)
         {
-            return Ok(await _mediator.Send<bool>(updateProductCommand));
+            return Ok(await _mediator.Send<ProductResponseDto>(updateProductCommand));
         }
 
         [HttpDelete]

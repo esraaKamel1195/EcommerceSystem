@@ -17,7 +17,6 @@ namespace Catalog.Application.Mappers
             // Added mapping for the AutoMapper exception: CreateProductCommand -> Product
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();
-
             CreateMap<Pagination<Product>, Pagination<ProductResponseDto>>().ReverseMap();
         }
     }

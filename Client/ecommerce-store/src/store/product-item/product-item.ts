@@ -6,6 +6,7 @@ import { IProduct } from '../../shared/models/product';
 
 @Component({
   selector: 'app-product-item',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './product-item.html',
   styleUrl: './product-item.scss',

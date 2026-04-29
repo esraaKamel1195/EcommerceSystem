@@ -1,5 +1,0 @@
-Issues to fix in Ecommerce project:
-1 - when add to basket connect with discount to get discount
-2 - checkout endpoint not work
-3 - ocelt authentication schema
-4 - delete api in basket service not work

@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using Catalog.Application.Commands;
+using Catalog.Application.GRPCServices;
 using Catalog.Application.Responses;
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
+using Discount.Grpc.Protos;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.Application.Handlers.Commands
 {
@@ -16,13 +13,38 @@ namespace Catalog.Application.Handlers.Commands
     {
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
+        private readonly DiscountGrpcService _discountGrpcService;
 
-        public CreateProductCommandHandler(IMapper mapper, IProductRepository productRepository) {
-            _mapper = mapper;
-            _productRepository = productRepository;
+        public CreateProductCommandHandler(
+            IMapper mapper,
+            IProductRepository productRepository,
+            DiscountGrpcService discountGrpcService
+        ) {
+           _mapper = mapper;
+           _productRepository = productRepository;
+           _discountGrpcService = discountGrpcService;
         }
+
         public async Task<ProductResponseDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
+            if (request.HasDiscount && request.DiscountAmount != 0)
+            {
+                await _discountGrpcService.CreateDiscount(new CouponModel
+                {
+                    ProductName = request.Name,
+                    Description = "discount",
+                    Amount = request.DiscountAmount
+                });
+
+                var coupon = await _discountGrpcService.GetDiscount(request.Name);
+
+                if (coupon is not null && coupon.Amount == request.DiscountAmount)
+                {
+                    request.PriceAfterDiscount = request.Price - coupon.Amount;
+                    request.DiscountAmount = coupon.Amount;
+                }
+            }
+
             var productEntity = _mapper.Map<Product>(request);
             //if (productEntity == null) {
                 var newProduct = await _productRepository.CreateProduct(productEntity);

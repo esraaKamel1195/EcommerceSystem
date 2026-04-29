@@ -1,13 +1,14 @@
+using Catalog.Application.GRPCServices;
 using Catalog.Application.Mappers;
 using Catalog.Application.Queries;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data.Context;
 using Catalog.Infrastructure.Repositories;
 using Common.Logging;
+using Discount.Grpc.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -29,14 +30,14 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = "https://id-local.eshopping.com:44344/"; // IdentityServer URL
+                options.Authority = "http://identityserver:9011/"; // IdentityServer URL
                 options.RequireHttpsMetadata = false; // Set to true in production
                 options.MetadataAddress = "http://identityserver:9011/.well-known/openid-configuration";
 
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "https://id-local.eshopping.com:44344/",
+                    ValidIssuer = "http://identityserver:9011/",
                     ValidateAudience = true,
                     ValidAudience = "Catalog",
                     ValidateLifetime = true,
@@ -83,6 +84,10 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IBrandRepository, ProductRepository>();
         builder.Services.AddScoped<ITypeRepository, ProductRepository>();
+        builder.Services.AddScoped<DiscountGrpcService>();
+        builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+            cfg => cfg.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"])
+        );
 
         var userPolicy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
@@ -196,7 +201,6 @@ public class Program
                 // Use *relative* URLs so the /catalog prefix is preserved by the browser
                 c.SwaggerEndpoint("v1/swagger.json", "Catalog API V1");
                 c.RoutePrefix = "swagger";
-
             });
         }
 

@@ -18,16 +18,18 @@ namespace Discount.Application.Commands
         public UpdateDiscountCouponCommandHandler
         (
             IDiscountRepository discountRepository,
+            IMapper mapper,
             ILogger<GetDiscountQueryHandler> logger
         )
         {
             _discountRepository = discountRepository;
+            _mapper = mapper;
             _logger = logger;
         }
         public async Task<CouponModel> Handle(UpdateDiscountCouponCommand request, CancellationToken cancellationToken)
         {
             // Example implementation, replace with actual update logic
-            var updatedCoupon = new Coupon
+            var coupon = new Coupon
             {
                 Id = request.Id,
                 ProductName = request.ProductName,
@@ -35,7 +37,7 @@ namespace Discount.Application.Commands
                 Amount = request.Amount
             };
             
-            await _discountRepository.UpdateDiscount(updatedCoupon);
+            var updatedCoupon = await _discountRepository.UpdateDiscount(coupon);
             _logger.LogInformation($"Coupon for the {request.ProductName} is successfully updated");
             var couponModel = _mapper.Map<CouponModel>(updatedCoupon);
             return couponModel;

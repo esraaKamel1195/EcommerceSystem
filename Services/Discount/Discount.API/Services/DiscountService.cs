@@ -9,15 +9,18 @@ namespace Discount.API.Services
     public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
     {
         private readonly IMediator _mediator;
-        public DiscountService(IMediator mediator)
+        private readonly ILogger<DiscountService> _logger;
+        public DiscountService(IMediator mediator, ILogger<DiscountService> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
         {
             var query = new GetDiscountQuery(request.ProductName);
             var result = await _mediator.Send(query);
+            _logger.LogInformation($"trying to query to get discount {result} from discount api service");
             return result;
         }
 
