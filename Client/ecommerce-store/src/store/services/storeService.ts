@@ -38,36 +38,45 @@ export class StoreService {
         Authorization: this.accountService.authorizationHeaderValue,
       },
     };
-    return this.http.get<IResponseDto<IProduct[]>>(`${this.base_url}/GetAllProducts`, { params, headers: httpOptions.headers });
+    return this.http.get<IResponseDto<IProduct[]>>(`${this.base_url}/GetAllProducts`, {
+      params,
+      headers: httpOptions.headers,
+    });
   }
 
   getAllBrands(): Observable<IBrands[]> {
-     const httpOptions = {
+    const httpOptions = {
       headers: {
         'Content-Type': 'application/json',
         Authorization: this.accountService.authorizationHeaderValue,
       },
     };
-    return this.http.get<IBrands[]>(`${this.base_url}/GetAllBrands`, { headers: httpOptions.headers });
+    return this.http.get<IBrands[]>(`${this.base_url}/GetAllBrands`, {
+      headers: httpOptions.headers,
+    });
   }
 
   getAllTypes(): Observable<ITypes[]> {
-     const httpOptions = {
+    const httpOptions = {
       headers: {
         'Content-Type': 'application/json',
         Authorization: this.accountService.authorizationHeaderValue,
       },
     };
-    return this.http.get<ITypes[]>(`${this.base_url}/GetAllTypes`, { headers: httpOptions.headers });
+    return this.http.get<ITypes[]>(`${this.base_url}/GetAllTypes`, {
+      headers: httpOptions.headers,
+    });
   }
 
   getProduct(id: string): Observable<IProduct> {
-     const httpOptions = {
+    const httpOptions = {
       headers: {
         'Content-Type': 'application/json',
         Authorization: this.accountService.authorizationHeaderValue,
       },
     };
-    return this.http.get<IProduct>(`${this.base_url}/GetProductById/${id}`, { headers: httpOptions.headers });
+    return this.http.get<IProduct>(`${this.base_url}/GetProductById/${id}`, {
+      headers: httpOptions.headers,
+    });
   }
 }

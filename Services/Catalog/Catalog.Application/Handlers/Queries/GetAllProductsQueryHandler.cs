@@ -39,7 +39,7 @@ namespace Catalog.Application.Handlers.Queries
                 else
                 {
                     product.HasDiscount = false;
-                    product.PriceAfterDiscount = product.Price;
+                    product.PriceAfterDiscount = null;
                     product.DiscountAmount = 0;
                 }
             }

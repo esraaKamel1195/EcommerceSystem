@@ -2,7 +2,7 @@
 <main class="container-fluid my-4">
   <div class="row g-4">
     <!-- SIDEBAR (static UI) -->
-    <aside class="col-lg-3">
+    <aside class="col-lg-2">
       <div class="card shadow-sm sticky-sidebar">
         <div class="card-header bg-white fw-semibold"><i class="fa fa-filter me-2"></i>Filters</div>
         <div class="card-body">
@@ -58,10 +58,10 @@
     </aside>
 
     <!-- PRODUCTS (static cards) -->
-    <section class="col-lg-9">
+    <section class="col-lg-10">
       <!-- Toolbar -->
       <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2">
-        <div class="input-group search-pill">
+        <div class="input-group search-pill mb-4">
           <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
           <input
             class="form-control"
@@ -123,6 +123,7 @@
                     <th scope="col">Image</th>
                     <th scope="col">Product</th>
                     <th scope="col">Price</th>
+                    <th scope="col">After Discount</th>
                     <th scope="col">Brand</th>
                     <th scope="col">Type</th>
                     <th scope="col">Action</th>
@@ -144,6 +145,11 @@
                       <small class="text-muted">Product ID: {{ item.id }}</small>
                     </td>
                     <td>${{ item.price.toFixed(2) }}</td>
+                    @if (item.priceAfterDiscount !== undefined && item.priceAfterDiscount !== null) {
+                      <td>${{ item.priceAfterDiscount.toFixed(2) }}</td>
+                    } @else {
+                      <td>-</td>
+                    }
                     <td>{{ item.brands?.name }}</td>
                     <td>{{ item.types?.name }}</td>
                     <td>

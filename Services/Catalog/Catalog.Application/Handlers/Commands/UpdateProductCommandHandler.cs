@@ -29,7 +29,7 @@ namespace Catalog.Application.Handlers.Commands
 
         public async Task<ProductResponseDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            if (request.HasDiscount && request.DiscountAmount != 0) 
+            if (request.HasDiscount && request.DiscountAmount != 0)
             {
                 var coupon = await _discountGrpcService.GetDiscount(request.Name);
                 if (coupon == null)
@@ -52,31 +52,14 @@ namespace Catalog.Application.Handlers.Commands
                     });
                 }
 
-                request.PriceAfterDiscount -= coupon.Amount;
+                request.PriceAfterDiscount = request.Price - coupon.Amount;
                 request.DiscountAmount = coupon.Amount;
             }
 
-            var productEntity = _mapper.Map<Product>(request);
-            var updateProduct = await _productRepository.UpdateProduct(productEntity);
+            Product productEntity = _mapper.Map<Product>(request);
+            Product updateProduct = await _productRepository.UpdateProduct(productEntity);
             ProductResponseDto newProduct = _mapper.Map<ProductResponseDto>(updateProduct);
             return newProduct;
         }
-
-        //try other handle way
-        /*public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
-        {
-            var updateProduct = await _productRepository.UpdateProduct(new Product()
-            {
-                Name = request.Name,
-                Description = request.Description,
-                ImageFile = request.ImageFile,
-                Brands = request.Brands,
-                Types = request.Types,
-                Summary = request.Summary,
-                Price = request.Price,
-            });
-
-            return updateProduct;
-        }*/
     }
 }

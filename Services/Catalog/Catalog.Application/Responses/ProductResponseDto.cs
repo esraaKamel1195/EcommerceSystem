@@ -16,7 +16,7 @@ namespace Catalog.Application.Responses
 
         [BsonRepresentation(MongoDB.Bson.BsonType.Decimal128)]
         public decimal Price { get; set; }
-        public decimal PriceAfterDiscount { get; set; }
+        public decimal? PriceAfterDiscount { get; set; }
         public ProductBrand Brands { get; set; }
         public ProductType Types { get; set; }
         public bool HasDiscount { get; set; } = false;

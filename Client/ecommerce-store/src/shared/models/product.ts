@@ -7,6 +7,9 @@ export interface IProduct {
   brands: IBrands;
   types: ITypes;
   price: number;
+  priceAfterDiscount: number;
+  hasDiscount: boolean;
+  discountAmount: number;
   [key: string]: any;  // Add this line
 }
 

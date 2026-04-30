@@ -19,7 +19,16 @@
       <h1 class="h4 fw-bold mb-2">{{ product()?.name }}</h1>
 
       <div class="d-flex align-items-baseline gap-2 mb-3">
-        <span class="display-6 fw-semibold text-primary"> {{ product()?.price | currency }}</span>
+        <span class="display-6 fw-semibold text-primary custom-overline">
+          {{ product()?.price | currency }}</span
+        >
+        @if (product()?.hasDiscount) {
+          <div>
+            <span class="display-6 fw-semibold text-primary">
+              {{ product()?.priceAfterDiscount | currency }}</span
+            >
+          </div>
+        }
       </div>
 
       <p class="text-muted mb-4">{{ product()?.description }}</p>
@@ -54,7 +63,7 @@
           <i class="fa fa-cart-plus me-2"></i>Add to Cart
         </button>
         <span class="text-muted small"
-          >Total: {{ (product()?.price ?? 0) * quantity | currency }}</span
+          >Total: {{ (product()?.priceAfterDiscount ?? 0) * quantity | currency }}</span
         >
       </div>
     </div>
