@@ -37,7 +37,6 @@ services:
      - ASPNETCORE_ENVIRONMENT=Development  # 👈 add this
      - "ASPNETCORE_URLS=http://+:8000" # ← or this (use one, not both)
      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
-     # - Auth__Authority="https://id-local.eshopping.com:44344/"
      - Auth__Authority="http://identityserver:9011/"
      - Auth__RequireHttpsMetadata=false
      - Auth__Audience=Catalog

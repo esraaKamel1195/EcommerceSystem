@@ -1,7 +1,5 @@
 Issues to fix in Ecommerce project:
 
-1 - checkout endpoint not work
+1 - ocelt authentication schema
 
-2 - ocelt authentication schema
-
-3 - delete api in basket service not work
+2 - delete api in basket service not work

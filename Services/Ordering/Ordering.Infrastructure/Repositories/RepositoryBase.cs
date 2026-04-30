@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Ordering.Application.Extensions;
 using Ordering.Core.Entities;
 using Ordering.Core.Repositories;

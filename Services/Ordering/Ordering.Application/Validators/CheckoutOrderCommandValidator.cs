@@ -20,9 +20,9 @@ namespace Ordering.Application.Validators
                 .GreaterThan(0)
                 .WithMessage("{TotalPrice} must be greater than zero.");
 
-            RuleFor(o => o.EmailAddress)
+            RuleFor(o => o.Email)
                 .NotEmpty()
-                .WithMessage("{EmailAddress} is required.");
+                .WithMessage("{Email} is required.");
 
             RuleFor(o => o.FirstName)
                 .NotEmpty()
