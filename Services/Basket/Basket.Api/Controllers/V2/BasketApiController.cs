@@ -56,7 +56,7 @@ namespace Basket.Api.Controllers.V2
             _logger.LogInformation($"Basket published for {basket.UserName}");
 
             //remove from basket
-            var deletedCMD = new DeleteBaskerByUserNameCommand(basket.UserName);
+            var deletedCMD = new DeleteBasketByUserNameCommand(basket.UserName);
             await _mediator.Send(deletedCMD);
             return Accepted();
         }

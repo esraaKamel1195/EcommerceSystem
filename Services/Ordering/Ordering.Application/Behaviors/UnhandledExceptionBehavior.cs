@@ -20,7 +20,7 @@ namespace Ordering.Application.Behaviors
             }
             catch (Exception ex) {
                 var requestName = typeof(TRequest).Name;
-                _logger.LogInformation($"Unhandled exception occured with request name: {requestName}, {request}");
+                _logger.LogInformation($"Unhandled exception happened with request name: {requestName}, {request}");
                 throw;
             }
         }

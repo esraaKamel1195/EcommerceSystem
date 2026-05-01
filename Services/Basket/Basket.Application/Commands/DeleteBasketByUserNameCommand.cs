@@ -2,11 +2,11 @@
 
 namespace Basket.Application.Commands
 {
-    public class DeleteBaskerByUserNameCommand: IRequest<Unit>
+    public class DeleteBasketByUserNameCommand: IRequest<Unit>
     {
         public string UserName { get; set; }
 
-        public DeleteBaskerByUserNameCommand(string userName)
+        public DeleteBasketByUserNameCommand(string userName)
         {
             UserName = userName;
         }

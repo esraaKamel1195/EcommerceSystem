@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Ordering.Application.Behaviors
 {
-    //will collect the fluent validation rules and excute them before the request handler is called.
+    //will collect the fluent validation rules and execute them before the request handler is called.
     //If any validation rules fail, it will throw a ValidationException with the details of the validation errors.
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
         where TRequest : IRequest<TResponse>
@@ -25,7 +25,7 @@ namespace Ordering.Application.Behaviors
                     _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
                 if (validationResults.Any())
                 {
-                    //now check for any failares
+                    //now check for any failures
                     var failures = validationResults.SelectMany(validationResults => validationResults.Errors)
                         .Where(f => f != null)
                         .ToList();

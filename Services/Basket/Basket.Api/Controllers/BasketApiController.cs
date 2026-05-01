@@ -57,7 +57,7 @@ namespace Basket.Api.Controllers
         [ProducesResponseType(typeof(Unit),(int)(HttpStatusCode.OK))]
         public async Task<ActionResult<Unit>> DeleteBasket(string userName)
         {
-            DeleteBaskerByUserNameCommand command = new DeleteBaskerByUserNameCommand(userName);
+            DeleteBasketByUserNameCommand command = new DeleteBasketByUserNameCommand(userName);
             return Ok( await _mediator.Send(command));
         }
 
@@ -83,7 +83,7 @@ namespace Basket.Api.Controllers
             _logger.LogInformation($"Basket published for {basket.UserName} with V1 endpoint");
 
             //remove from basket
-            var deletedCMD = new DeleteBaskerByUserNameCommand(basket.UserName);
+            var deletedCMD = new DeleteBasketByUserNameCommand(basket.UserName);
             await _mediator.Send(deletedCMD);
             return Accepted();
         }
