@@ -12,28 +12,26 @@
       </div>
 
       <!-- Right Side: Breadcrumb -->
-      <!-- @if (crumbs$ | async as crumbs) { -->
-      <nav aria-label="breadcrumb" *ngIf="crumbs$ | async as crumbs">
-        <ol class="breadcrumb mb-0">
-          @for (crumb of crumbs; track $index) {
-            <li
-              class="breadcrumb-item"
-              [class.active]="crumb.current"
-              [attr.aria-current]="crumb.current ? 'page' : null"
-            >
-              @if (!crumb.current) {
-                <a [routerLink]="crumb.url">
-                  {{ crumb.label }}
-                </a>
-              }
-              @if (crumb.current) {
-                <span>{{ crumb.label }}</span>
-              }
-            </li>
-          }
-        </ol>
-      </nav>
-      <!-- } -->
+        <nav aria-label="breadcrumb" *ngIf="crumbs$ | async as crumbs">
+          <ol class="breadcrumb mb-0">
+            @for (crumb of crumbs; track $index) {
+              <li
+                class="breadcrumb-item"
+                [class.active]="crumb.current"
+                [attr.aria-current]="crumb.current ? 'page' : null"
+              >
+                @if (!crumb.current) {
+                  <a [routerLink]="crumb.url">
+                    {{ crumb.label }}
+                  </a>
+                }
+                @if (crumb.current) {
+                  <span>{{ crumb.label }}</span>
+                }
+              </li>
+            }
+          </ol>
+        </nav>
     </div>
   </section>
 </ng-container>

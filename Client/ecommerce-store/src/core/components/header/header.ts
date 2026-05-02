@@ -5,10 +5,7 @@ import { Breadcrumb } from '../../services/breadcrumb';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    CommonModule,
-    RouterModule,
-  ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

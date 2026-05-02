@@ -48,7 +48,7 @@ export class AccountService {
     localStorage.removeItem('token');
     localStorage.removeItem('token_type');
     this.currentUserSource.next(null);
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/account/login');
   }
 
   public finishLogin = (): Promise<User> => {
