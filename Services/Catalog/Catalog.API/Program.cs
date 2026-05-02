@@ -61,6 +61,13 @@ public class Program
                         Console.WriteLine($"Exception: {context.Exception}");
                         Console.WriteLine($"Authority: {options.Authority}");
                         return Task.CompletedTask;
+                    },
+
+                    OnTokenValidated = context =>
+                    {
+                        Log.Information("Token validated successfully for {Subject}", context.Principal?.Identity?.Name);
+                        Console.WriteLine($"Token validated successfully for {context.Principal?.Identity?.Name}");
+                        return Task.CompletedTask;
                     }
                 };
             });

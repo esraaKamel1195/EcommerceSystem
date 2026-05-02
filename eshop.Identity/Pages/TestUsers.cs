@@ -32,8 +32,8 @@ public static class TestUsers
                     Password = "alice",
                     Claims =
                     {
-                        new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(JwtClaimTypes.Name, "Alice Smith", ClaimValueTypes.String),
+                        new Claim(JwtClaimTypes.GivenName, "Alice", ClaimValueTypes.String),
                         new Claim(JwtClaimTypes.FamilyName, "Smith"),
                         new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
                         new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),

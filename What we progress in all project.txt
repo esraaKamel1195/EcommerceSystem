@@ -1,0 +1,27 @@
+What we progress in all project:
+1 - Create 4 services ( Catalog, Basket, Discount, Ordering) with structure each service with 4 layers (API, Application, core, and infrastructure).
+2 - In Catalog: working with Products, Brands, and Types
+      - Generate APIS for products (get all, post, put, delete, get one, get by brand, get by type)
+      - Generate APIS for types, and brands (get all)
+      - Create paginations and special params 
+3 - In Basket: working with handle products in card basket (get, post, put, delete).
+4 - In Discount: working with apply discount for products with grpc calls and proto services (get, post, put, delete).
+5 - In Ordering: working with created orders (get by username, update, delete, checkout or order).
+6 - Authenticate Catalog and Basket with identity server and jwt bearer schema
+7 - Connect between basket and discount to check if products in basket has discount and calculate based on discount value
+8 - Connect between catalog and discount to get each product discount if has and calculate
+9 - Create events with RabbitMQ and Masstransit between basket and ordering services to handle checkout event to create new order
+10 - Each service has swagger documentation to connect with
+11 - Use Api Versioning 
+12 - Use Logging and implement elasticsearch and use kibana dashboard to show logs
+13 - Use nginx server to secure and balance traffic between services
+14 - Use Ocelt Api.Gateway
+15 - Use Mongodb database with Catalog, redis database with Basket, postress and Dapper in Discount, and SQL database in ordering.
+16 - Use Fluent Validations to check commands in Ordering service
+17 - Create custom exceptions in Ordering service
+18 - Create custom Behavior to handle exceptions and validation
+19 - Create Extensions method to handle invoke or call methods in program cs
+20 - Use Mediator to call commands and queries in services
+21 - Use Mapper to convert between types in each service
+22 - handle docker file to build in containers with docker desktop
+23 - Use portainer to work with docker

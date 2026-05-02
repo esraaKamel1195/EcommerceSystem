@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Catalog.API.Controllers
 {
     [ApiController]
-    //[Authorize(Policy = "CanRead")]
+    [Authorize(Policy = "CanRead")]
     public class BaseApiController : ControllerBase
     {
 

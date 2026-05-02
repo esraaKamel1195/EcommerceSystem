@@ -162,6 +162,8 @@ services:
       - ASPNETCORE_URLS=http://+:8000;http://+:8080  # ← UPDATE THIS
       - "DatabaseSettings__ConnectionString=Host=discountdb;Port=5432;Database=discountdb;Username=admin;Password=password@123"
       - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+      - Auth__Authority="http://identityserver:9011/"
+      - Auth__RequireHttpsMetadata=false
 
   ordering.api:
     image: ${DOCKER_REGISTRY-}orderingapi

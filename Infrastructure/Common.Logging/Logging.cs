@@ -11,7 +11,7 @@ namespace Common.Logging
         public static Action<HostBuilderContext, LoggerConfiguration> ConfigureLogger =>
         (context, loggerConfiguration) =>
         {
-            var env = context.HostingEnvironment;
+            IHostEnvironment env = context.HostingEnvironment;
             loggerConfiguration.MinimumLevel.Information()
             .Enrich.FromLogContext()
             .Enrich.WithProperty("ApplicationName", env.ApplicationName)
@@ -29,8 +29,8 @@ namespace Common.Logging
                 loggerConfiguration.MinimumLevel.Override("Ordering", LogEventLevel.Debug);
             }
 
-            //TODO: Add Elasticsearch CConfigurations 
-            var elasticUrl = context.Configuration.GetValue<string>("ElasticConfiguration:Uri");
+            //TODO: Add Elasticsearch Configurations
+            string elasticUrl = context.Configuration.GetValue<string>("ElasticConfiguration:Uri");
             if (!string.IsNullOrEmpty(elasticUrl))
             {
                 loggerConfiguration.WriteTo.Elasticsearch(

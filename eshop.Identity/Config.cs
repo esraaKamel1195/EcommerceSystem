@@ -21,7 +21,7 @@ public static class Config
             new ApiScope("catalogapi.read"),
             new ApiScope("catalogapi.write"),
             new ApiScope("eshoppinggateway"),
-            //new ApiScope("discountapi"),
+            new ApiScope("discountapi"),
         };
 
     public static IEnumerable<ApiResource> ApiResources =>
@@ -37,7 +37,11 @@ public static class Config
             },
             new ApiResource("EShoppingGateway", "EShopping Gateway")
             {
-                Scopes = { "eshoppinggateway", "basketapi" }
+                Scopes = { "eshoppinggateway", "basketapi", "catalogapi.read", "discountapi" }
+            },
+            new ApiResource("Discount", "Discount.API")
+            {
+                Scopes = { "discount.api" }
             }
         };
 
@@ -83,7 +87,7 @@ public static class Config
                 ClientId = "EShppingGatewayClient",
                 ClientSecrets = {new Secret("49C1A7B8-1C79-4A70-A3C6-A37998FB86B0".Sha256()) } ,
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "eshoppinggateway", "basketapi" , "catalogapi.read" }
+                AllowedScopes = { "eshoppinggateway", "basketapi" , "catalogapi.read", "discountapi" }
             },
             new Client
             {
