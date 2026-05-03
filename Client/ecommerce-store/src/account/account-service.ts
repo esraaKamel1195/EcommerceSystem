@@ -65,6 +65,8 @@ export class AccountService {
 
   public finishLogout = () => {
     this.user = null;
+    localStorage.removeItem('token');
+    localStorage.setItem('token_type', this.token);
     return this.manager.signoutRedirectCallback();
   };
 

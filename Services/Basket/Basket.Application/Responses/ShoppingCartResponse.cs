@@ -20,7 +20,12 @@ namespace Basket.Application.Responses
                 decimal totalPrice = 0;
                 foreach(ShoppingCartItem item in Items)
                 {
-                    totalPrice += item.price * item.quantity;
+                    if (item.priceAfterDiscount is not null)
+                    {
+                        totalPrice += (decimal)item.priceAfterDiscount * item.quantity;
+                    } else { 
+                        totalPrice += item.price * item.quantity; 
+                    }
                 }
                 return totalPrice;
             }

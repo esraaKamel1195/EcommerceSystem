@@ -76,6 +76,7 @@ export class BasketService {
       productId: item.id,
       productName: item.name,
       price: item.price,
+      priceAfterDiscount: item.priceAfterDiscount,
       imageFile: item.imageFile,
       quantity: 0,
     };
@@ -152,7 +153,7 @@ export class BasketService {
       });
   }
 
-  checkoutBasket(basket: Basket) {
+  checkoutBasket(username: string) {
     const httpOptions = {
       headers: {
         'Content-Type': 'application/json',
@@ -160,22 +161,42 @@ export class BasketService {
       },
     };
 
-    return this.http.post(`${this.base_url}/Checkout`, basket, httpOptions).subscribe({
-      next: () => {
-        this.basketSource.next(null);
-        this.basketTotal.next(null);
-        this.router.navigate(['/']);
-        // this.deleteBasket(basket);
-      },
-      error: (err) => console.log(err),
-    });
+    const prepareCheckoutObject = {
+      username: username,
+      totalPrice: 0,
+      FirstName: 'Sina',
+      LastName: 'Wang',
+      Email: 'test@email.com',
+      AddressLine: '1st Street',
+      Country: 'China',
+      TotalPrice: '100',
+      City: 'trsst',
+      ZibCode: '15263',
+      CardName: 'tes test',
+      CardNumber: '12344567891252',
+      Expiration: '20/30',
+      CVV: '321',
+      PaymentMethod: 'Cash',
+    };
+
+    return this.http
+      .post(`${this.base_url}/Checkout`, prepareCheckoutObject, httpOptions)
+      .subscribe({
+        next: () => {
+          this.basketSource.next(null);
+          this.basketTotal.next(null);
+          this.router.navigate(['/']);
+          // this.deleteBasket(basket);
+        },
+        error: (err) => console.log(err),
+      });
   }
 
   private calculateTotals() {
     const basket = this.getCurrentBasketValue();
-    if (basket) {
-      const total = basket.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      this.basketTotal.next({ total });
-    }
+    // if (basket) {
+    //   const total = basket.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      this.basketTotal.next({total: Number(basket?.totalPrice)});
+    // }
   }
 }

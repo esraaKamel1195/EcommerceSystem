@@ -1,26 +1,18 @@
 import { Component, ElementRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { PaginationComponent, PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { StoreService } from './services/storeService';
 import { IBrands, IProduct, ITypes } from '../shared/models/product';
 import { ProductItem } from './product-item/product-item';
 import { StoreParams } from '../shared/models/storeParams';
-import { PaginationComponent, PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ProductTablesComponent } from './product-tables/product-tables.component';
-import { RouterModule } from '@angular/router';
 import { BasketService } from '../basket/basket-service';
 
 @Component({
   selector: 'app-store',
   standalone: true,
-  imports: [
-    ProductItem,
-    PaginationComponent,
-    FormsModule,
-    CommonModule,
-    RouterModule,
-    ProductTablesComponent,
-  ],
+  imports: [ProductItem, PaginationComponent, FormsModule, CommonModule, RouterModule],
   templateUrl: './store.html',
   styleUrl: './store.scss',
 })
@@ -76,8 +68,6 @@ export class Store implements OnInit {
         this.itemsPerPage = res.pageSize;
         this.storeParams.pageNumber = res.pageIndex;
         this.storeParams.pageSize = res.pageSize;
-
-        console.log('products', this.products());
       },
       error: (err) => {
         console.error('Error fetching products', err);
@@ -88,7 +78,6 @@ export class Store implements OnInit {
   getAllBrands(): void {
     this.store.getAllBrands().subscribe({
       next: (res) => {
-        console.log('brands', res);
         this.brands = [{ id: '', name: 'All Brands' }, ...res];
       },
       error: (err) => {
@@ -100,7 +89,6 @@ export class Store implements OnInit {
   getAllTypes(): void {
     this.store.getAllTypes().subscribe({
       next: (res) => {
-        console.log('types', res);
         this.types = [{ id: '', name: 'All Types' }, ...res];
       },
       error: (err) => {
@@ -133,6 +121,14 @@ export class Store implements OnInit {
     console.log('searchTerm', this.searchTerm?.nativeElement.value);
     this.storeParams.search = this.searchTerm?.nativeElement.value;
     this.storeParams.pageNumber = 1; // Reset to first page on new search
+    this.getAllProducts();
+  }
+
+  onResetSearch(input: HTMLInputElement) {
+    input.value = '';
+    console.log('searchTerm reset', this.searchTerm?.nativeElement.value);
+    this.storeParams.search = undefined;
+    this.storeParams.pageNumber = 1;
     this.getAllProducts();
   }
 

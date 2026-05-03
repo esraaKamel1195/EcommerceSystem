@@ -13,6 +13,7 @@
             <th scope="col">Image</th>
             <th scope="col">Product</th>
             <th scope="col">Price</th>
+            <th scope="col">Price After Discount</th>
             <th scope="col">Quantity</th>
             <th scope="col">Total</th>
             <th scope="col">Action</th>
@@ -34,6 +35,11 @@
               <small class="text-muted">Product ID: {{ item.productId }}</small>
             </td>
             <td>${{ item.price.toFixed(2) }}</td>
+            @if (item.priceAfterDiscount) {
+             <td>${{ item.priceAfterDiscount.toFixed(2) }}</td>
+            } @else {
+              <td>-</td>
+            }
             <td>
               <div class="btn-group" role="group">
                 <button
@@ -53,7 +59,11 @@
                 </button>
               </div>
             </td>
-            <td class="fw-bold">${{ (item.price * item.quantity).toFixed(2) }}</td>
+            @if (item.priceAfterDiscount) {
+              <td class="fw-bold">${{ (item.priceAfterDiscount * item.quantity).toFixed(2) }}</td>
+            } @else {
+              <td class="fw-bold">${{ (item.price * item.quantity).toFixed(2) }}</td>
+            }
             <td>
               <button class="btn btn-danger btn-sm" (click)="remove(item)">
                 <i class="fa fa-trash"></i> Remove

@@ -51,7 +51,7 @@
           </div>
 
           <button class="btn btn-outline-secondary w-100" type="button" (click)="onResetFilters()">
-            <i class="fa-solid fa-arrow-rotate-left me-2"></i>Reset Filters
+            <i class="fa fa-solid fa-arrow-rotate-left me-2"></i>Reset Filters
           </button>
         </div>
       </div>
@@ -61,16 +61,18 @@
     <section class="col-lg-10">
       <!-- Toolbar -->
       <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2">
-        <div class="input-group search-pill mb-4">
-          <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <div class="input-group search-pill mb-3">
+          <span class="input-group-text"><i class="fa fa-solid fa-magnifying-glass"></i></span>
           <input
             class="form-control"
             type="search"
             #searchTerm
             (keyup)="onSearch()"
-            placeholder="Search products, e.g. “sofa”, “lamp”, “rug”…"
+            placeholder="Search products"
           />
-          <button class="btn" type="button"><i class="fa-solid fa-xmark"></i></button>
+          <button class="btn" type="button" (click)="onResetSearch(searchTerm); ">
+            <i class="fa fa-solid fa-times"></i>
+          </button>
         </div>
         <div class="text-muted">
           Showing
@@ -82,11 +84,11 @@
           of <strong>{{ totalItems }}</strong> results
         </div>
         <div class="d-flex gap-2">
-          <button class="btn" type="button" (click)="toggleViewStyle()">
+          <button class="btn style" type="button" (click)="toggleViewStyle()">
             @if (toggleStyle() === 'grid') {
-              <i class="fa fa-solid fa-list me-2"></i>
+              <i class="fa fa-solid fa-list"></i>
             } @else {
-              <i class="fa fa-solid fa-th me-2"></i>
+              <i class="fa fa-solid fa-th"></i>
             }
           </button>
           <select class="form-select" (change)="onSortSelected($event.target)">
@@ -109,14 +111,14 @@
         <!-- card pattern -->
         @if (toggleStyle() === 'grid') {
           @if (products()?.length === 0) {
-            <div class="col-12">
+            <div class="col-12 mb-3 pt-3">
               <div class="alert alert-info text-center mb-0">
                 No products found matching your criteria.
               </div>
             </div>
           }
           <ng-container *ngIf="products()?.length !== 0">
-            <div class="table-responsive shadow-sm rounded">
+            <div class="table-responsive shadow-sm rounded table-custom-striped">
               <table class="table align-middle text-center mb-0 table-striped">
                 <thead class="table-light text-uppercase">
                   <tr>
@@ -137,6 +139,7 @@
                         alt="Product"
                         class="img-thumbnail"
                         width="70"
+                        height="65"
                       />
                     </td>
                     <td class="text-start">
@@ -145,7 +148,9 @@
                       <small class="text-muted">Product ID: {{ item.id }}</small>
                     </td>
                     <td>${{ item.price.toFixed(2) }}</td>
-                    @if (item.priceAfterDiscount !== undefined && item.priceAfterDiscount !== null) {
+                    @if (
+                      item.priceAfterDiscount !== undefined && item.priceAfterDiscount !== null
+                    ) {
                       <td>${{ item.priceAfterDiscount.toFixed(2) }}</td>
                     } @else {
                       <td>-</td>

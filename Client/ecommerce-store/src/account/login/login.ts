@@ -8,10 +8,10 @@ import { AccountService } from '../account-service';
   styleUrl: './login.scss',
 })
 export class Login {
- title="Login"
-  constructor(private acntService: AccountService) { }
+  title = 'Login';
+  constructor(private acntService: AccountService) {}
 
-  login(){
+  login() {
     this.acntService.login();
   }
 }

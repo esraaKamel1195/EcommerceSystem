@@ -1,5 +1,4 @@
-﻿
-namespace Basket.Core.Entities
+﻿namespace Basket.Core.Entities
 {
     public class BasketCheckout
     {
@@ -11,7 +10,7 @@ namespace Basket.Core.Entities
         public string AddressLine { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
-        public string ZipCode { get; set; }
+        public string? ZipCode { get; set; }
         public string CardName { get; set; }
         public string CardNumber { get; set; }
         public string Expiration { get; set; }

@@ -40,6 +40,6 @@ export class Checkout implements OnInit {
   }
 
   orderNow(item: IBasket) {
-    this.basketService.checkoutBasket(item);
+    this.basketService.checkoutBasket(item.userName);
   }
 }

@@ -30,7 +30,7 @@ namespace Basket.Application.Handlers.Commands
                 var coupon = await _discountGrpcService.GetDiscount(item.productName);
                 if (coupon is not null)
                 {
-                    item.price -= coupon.Amount;
+                    item.priceAfterDiscount = item.price - coupon.Amount;
                 }
             }
             

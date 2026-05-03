@@ -71,7 +71,7 @@ namespace Basket.Api.Controllers
             var query = new GetBasketByUserNameQuery(basketCheckout.Username);
             var basket = await _mediator.Send(query);
 
-            if(basket == null)
+            if (basket == null)
             { 
                 return BadRequest();  
             }

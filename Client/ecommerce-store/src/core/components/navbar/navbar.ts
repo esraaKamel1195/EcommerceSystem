@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, effect, signal, WritableSignal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -20,7 +20,16 @@ export class Navbar {
   constructor(
     public basketService: BasketService,
     private accountService: AccountService,
-  ) {}
+  ) {
+    effect(() => {
+      if (localStorage.getItem('token')) {
+        this.isUserAuthenticated.set(true);
+      } else {
+        this.isUserAuthenticated.set(false);
+      }
+      console.log('Effect triggered, isUserAuthenticated:', this.isUserAuthenticated());
+    });
+  }
 
   ngOnInit(): void {
     this.accountService.currentUser$.subscribe({
@@ -44,5 +53,6 @@ export class Navbar {
 
   logout() {
     this.accountService.logout();
+    this.accountService.finishLogout();
   }
 }

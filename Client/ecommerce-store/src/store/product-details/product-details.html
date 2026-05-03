@@ -19,7 +19,10 @@
       <h1 class="h4 fw-bold mb-2">{{ product()?.name }}</h1>
 
       <div class="d-flex align-items-baseline gap-2 mb-3">
-        <span class="display-6 fw-semibold text-primary custom-overline">
+        <span
+          class="display-6 fw-semibold text-primary"
+          [ngClass]="{ 'custom-overline': product()?.hasDiscount }"
+        >
           {{ product()?.price | currency }}</span
         >
         @if (product()?.hasDiscount) {
