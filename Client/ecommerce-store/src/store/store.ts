@@ -28,9 +28,9 @@ export class Store implements OnInit {
   ];
 
   itemsPerPageOptions = [
-    { value: '10', name: 'Default' },
+    { value: '15', name: 'Default' },
     { name: '5 / page', value: 5 },
-    { name: '10 / page', value: 10 },
+    { name: '15 / page', value: 15 },
     { name: '20 / page', value: 20 },
     { name: '25 / page', value: 25 },
     { name: '50 / page', value: 50 },

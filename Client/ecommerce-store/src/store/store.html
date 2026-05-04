@@ -2,7 +2,7 @@
 <main class="container-fluid my-4">
   <div class="row g-4">
     <!-- SIDEBAR (static UI) -->
-    <aside class="col-lg-2">
+    <aside class="col-lg-2 mt-3">
       <div class="card shadow-sm sticky-sidebar">
         <div class="card-header bg-white fw-semibold"><i class="fa fa-filter me-2"></i>Filters</div>
         <div class="card-body">
@@ -58,10 +58,10 @@
     </aside>
 
     <!-- PRODUCTS (static cards) -->
-    <section class="col-lg-10">
+    <section class="col-lg-10 mt-3">
       <!-- Toolbar -->
       <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2">
-        <div class="input-group search-pill mb-3">
+        <div class="input-group search-pill mb-2">
           <span class="input-group-text"><i class="fa fa-solid fa-magnifying-glass"></i></span>
           <input
             class="form-control"
@@ -70,7 +70,7 @@
             (keyup)="onSearch()"
             placeholder="Search products"
           />
-          <button class="btn" type="button" (click)="onResetSearch(searchTerm); ">
+          <button class="btn" type="button" (click)="onResetSearch(searchTerm)">
             <i class="fa fa-solid fa-times"></i>
           </button>
         </div>

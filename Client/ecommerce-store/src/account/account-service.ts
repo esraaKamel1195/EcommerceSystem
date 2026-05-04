@@ -29,6 +29,7 @@ export class AccountService {
   }
 
   isAuthenticated(): boolean {
+    console.log('this.user', this.user);
     return this.user != null && !this.user.expired;
   }
 
@@ -47,6 +48,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('token_type');
+    this.user = null;
     this.currentUserSource.next(null);
     this.router.navigateByUrl('/account/login');
   }

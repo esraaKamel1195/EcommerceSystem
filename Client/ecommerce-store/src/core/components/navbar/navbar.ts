@@ -52,7 +52,7 @@ export class Navbar {
   }
 
   logout() {
+    this.accountService.signout();
     this.accountService.logout();
-    this.accountService.finishLogout();
   }
 }

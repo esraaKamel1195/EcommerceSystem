@@ -34,10 +34,12 @@ export const routes: Routes = [
   {
     path: 'signin-callback',
     component: SigninRedirectCallbackComponent,
+    pathMatch: 'full'
   },
   {
     path: 'signout-callback',
-    component: SignoutRedirectCallbackComponent,
+    redirectTo: '/account/login',
+
   },
   { path: 'not-found', component: NotFound },
   { path: 'unauthorized', component: NotAuthentication },
