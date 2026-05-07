@@ -39,6 +39,7 @@ namespace Basket.Application.Handlers.Commands
                 UserName = request.UserName,
                 Items = request.Items
             });
+
             ShoppingCartResponse response = _mapper.Map<ShoppingCartResponse>(shoppingCart);
             return response;
         }

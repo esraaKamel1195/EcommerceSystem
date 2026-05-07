@@ -69,6 +69,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{694A014C
 		API.Gateway\nginx\nginx.local.conf = API.Gateway\nginx\nginx.local.conf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.core.tests", "Services\Basket\Basket.core.tests\Basket.core.tests.csproj", "{295C5F92-486D-ABF2-655E-FA96F01554F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.application.tests", "Services\Basket\Basket.application.tests\Basket.application.tests.csproj", "{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +163,14 @@ Global
 		{E9D3DD34-C686-1F0A-55E7-19E4F54EC2F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9D3DD34-C686-1F0A-55E7-19E4F54EC2F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9D3DD34-C686-1F0A-55E7-19E4F54EC2F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{295C5F92-486D-ABF2-655E-FA96F01554F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295C5F92-486D-ABF2-655E-FA96F01554F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295C5F92-486D-ABF2-655E-FA96F01554F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295C5F92-486D-ABF2-655E-FA96F01554F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +201,8 @@ Global
 		{F08E8FA8-3C23-4677-BE2B-14B0126CA765} = {78DA9288-B07B-48AE-B390-DC7A7FF7E5D2}
 		{E9D3DD34-C686-1F0A-55E7-19E4F54EC2F3} = {78DA9288-B07B-48AE-B390-DC7A7FF7E5D2}
 		{694A014C-EF94-4018-BC9C-D575B4DAF9CF} = {15B6C0A7-09A7-4E5C-9DE6-C663BCBA9E10}
+		{295C5F92-486D-ABF2-655E-FA96F01554F1} = {466DBFA8-3404-4B01-9682-B5400D0DA7F7}
+		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56} = {466DBFA8-3404-4B01-9682-B5400D0DA7F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {796EDBAE-B096-406B-8B5C-81767D5AE070}

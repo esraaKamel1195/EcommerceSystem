@@ -2,8 +2,16 @@
 {
     public class BasketCheckout
     {
+        private decimal _totalPrice;
         public string Username { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { 
+            get => _totalPrice; 
+            set 
+            { if (value <= 0) 
+                 throw new ArgumentException("Total Price cannot be negative or zero");
+                 _totalPrice = value;
+            }
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
