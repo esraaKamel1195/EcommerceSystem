@@ -93,6 +93,8 @@ namespace Basket.application.tests.Commands
             mockMapper.Verify(
                 m => m.Map<ShoppingCartResponse>(It.IsAny<ShoppingCart>()), Times.Once
             );
+
+            mockBasketRepo.VerifyNoOtherCalls();
         }
     }
 }

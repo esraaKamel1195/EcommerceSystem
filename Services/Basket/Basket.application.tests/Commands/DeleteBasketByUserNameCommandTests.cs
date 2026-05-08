@@ -1,6 +1,4 @@
-﻿
-
-using Basket.Application.Handlers.Commands;
+﻿using Basket.Application.Handlers.Commands;
 using Basket.Core.Repositories;
 using Moq;
 

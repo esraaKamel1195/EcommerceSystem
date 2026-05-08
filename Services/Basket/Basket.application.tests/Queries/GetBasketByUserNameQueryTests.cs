@@ -2,6 +2,7 @@
 using Basket.Application.Handlers.Queries;
 using Basket.Application.Mappers;
 using Basket.Application.Queries;
+using Basket.Application.Responses;
 using Basket.Core.Entities;
 using Basket.Core.Repositories;
 using Moq;
@@ -58,6 +59,53 @@ namespace Basket.application.tests.Queries
             var result = await handler.Handle(new GetBasketByUserNameQuery(It.IsAny<string>()), new CancellationToken());
 
             Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task Handle_whenRepositoryThrow_ExceptionIsPropagated()
+        {
+            var mockBasketRepository = new Mock<IBasketRepository>();
+            var mockMapper = new Mock<IMapper>();
+
+            mockBasketRepository.Setup(r => r.GetBasket("esraa"))
+                .ThrowsAsync(new Exception("Redis failure"));
+
+            var handler = new GetBasketByUserNameQueryHandler(mockBasketRepository.Object, mockMapper.Object);
+
+            //act & assert
+            await Assert.ThrowsAsync<Exception>(() => 
+                handler.Handle(new GetBasketByUserNameQuery("esraa"), CancellationToken.None)
+            );
+        }
+
+        [Theory]
+        [InlineData("user1")]
+        [InlineData("user2")]
+        [InlineData("user3")]
+        public async Task Handle_MultiplesUsername_ReturnsCorrectBasket(string username)
+        {
+            var mockBasketRepo = new Mock<IBasketRepository>();
+
+            var mockMapper = new Mock<IMapper>();
+
+            var basket = new ShoppingCart(username);
+
+            var response = new ShoppingCartResponse 
+            {
+                UserName = username,
+            };
+
+            mockBasketRepo.Setup(r => r.GetBasket(username)).ReturnsAsync(basket);
+
+            mockMapper.Setup(m => m.Map<ShoppingCartResponse>(basket)).Returns(response);
+
+            var handler = new GetBasketByUserNameQueryHandler(mockBasketRepo.Object, mockMapper.Object);
+
+            var result = await handler.Handle(new GetBasketByUserNameQuery(username), new CancellationToken());
+
+            Assert.NotNull(result);
+
+            Assert.Equal(username, result.UserName);
         }
     }
 }
