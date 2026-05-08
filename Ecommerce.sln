@@ -73,6 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.core.tests", "Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.application.tests", "Services\Basket\Basket.application.tests\Basket.application.tests.csproj", "{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Application.tests", "Services\Ordering\Ordering.Application.tests\Ordering.Application.tests.csproj", "{A13F03F3-388F-7B3A-0296-2C6877D96487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A13F03F3-388F-7B3A-0296-2C6877D96487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A13F03F3-388F-7B3A-0296-2C6877D96487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A13F03F3-388F-7B3A-0296-2C6877D96487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A13F03F3-388F-7B3A-0296-2C6877D96487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +209,7 @@ Global
 		{694A014C-EF94-4018-BC9C-D575B4DAF9CF} = {15B6C0A7-09A7-4E5C-9DE6-C663BCBA9E10}
 		{295C5F92-486D-ABF2-655E-FA96F01554F1} = {466DBFA8-3404-4B01-9682-B5400D0DA7F7}
 		{9DEAAE24-240E-C0DB-894D-A6AAF43E2A56} = {466DBFA8-3404-4B01-9682-B5400D0DA7F7}
+		{A13F03F3-388F-7B3A-0296-2C6877D96487} = {0250DBA8-454C-48CF-9AA9-E3531555CC4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {796EDBAE-B096-406B-8B5C-81767D5AE070}

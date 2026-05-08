@@ -6,17 +6,17 @@ namespace Basket.Application.GRPCServices
     public class DiscountGrpcService
     {
         private readonly DiscountProtoService.DiscountProtoServiceClient _discountProtoServiceClient;
-        private readonly ILogger<DiscountGrpcService> _logger;
+        //private readonly ILogger<DiscountGrpcService> _logger;
         public DiscountGrpcService(
-            DiscountProtoService.DiscountProtoServiceClient discountProtoServiceClient,
-            ILogger<DiscountGrpcService> logger
+            DiscountProtoService.DiscountProtoServiceClient discountProtoServiceClient
+            //ILogger<DiscountGrpcService> logger
         )
         {
             _discountProtoServiceClient = discountProtoServiceClient;
-            _logger = logger;
+            //_logger = logger;
         }
 
-        public async Task<CouponModel> GetDiscount(string productName)
+        public virtual async Task<CouponModel> GetDiscount(string productName)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Basket.Application.GRPCServices
             {
                 // Log the exception or handle it as needed
                 Console.WriteLine($"Discount for product '{productName}' not found: {ex.Message}");
-                _logger.LogInformation($"Discount get discount exception '{ex}' ");
+                //_logger.LogInformation($"Discount get discount exception '{ex}' ");
                 return null; // Return null or a default value if the discount is not found
             }
         }
