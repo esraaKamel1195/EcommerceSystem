@@ -1,5 +1,4 @@
-﻿
-using Basket.Core.Entities;
+﻿using Basket.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Basket.core.tests.Entities

@@ -1,6 +1,5 @@
 ﻿using Basket.Core.Entities;
 
-
 namespace Basket.core.tests.Entities
 {
     public class ShoppingCartTests
