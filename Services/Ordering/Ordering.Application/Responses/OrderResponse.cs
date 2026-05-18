@@ -5,7 +5,7 @@ namespace Ordering.Application.Responses
     {
         public int Id { get; set; }
         public string? UserName { get; set; }
-        public string? TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }

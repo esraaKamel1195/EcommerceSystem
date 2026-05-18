@@ -1,0 +1,2 @@
+Test with xunit:
+1 - dotnet new xunit -n "test folder with extention .tests"

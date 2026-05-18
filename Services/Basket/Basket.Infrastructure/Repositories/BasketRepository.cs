@@ -21,8 +21,9 @@ namespace Basket.Infrastructure.Repositories
             if (string.IsNullOrEmpty(basket))
             {
                 return null;
+            } else {
+                return JsonConvert.DeserializeObject<ShoppingCart>(basket);
             }
-            return JsonConvert.DeserializeObject<ShoppingCart>(basket);
         }
         
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart cart)
@@ -51,7 +52,7 @@ namespace Basket.Infrastructure.Repositories
             if(basket != null) 
             {
                 Console.WriteLine("try delete or remove basket");
-                await _Rediscache.RemoveAsync(basket);
+                await _Rediscache.RemoveAsync(username);
             }
         }
     }

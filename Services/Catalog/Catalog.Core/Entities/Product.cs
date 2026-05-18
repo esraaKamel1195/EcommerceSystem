@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Catalog.Core.Entities
 {
      public class Product: BaseEntity
-    {
+     {
         public string Name { get; set; }
         public string Description { get; set; }
         public string Summary { get; set; }
@@ -17,5 +17,5 @@ namespace Catalog.Core.Entities
         public bool HasDiscount { get; set; } = false;
         public int DiscountAmount { get; set; } = 0;
         public Coupon? Coupon { get; set; } = null;
-    }
+     }
 }

@@ -6,7 +6,7 @@ namespace Basket.core.tests.Entities
     public class ShoppingCartItemTests
     {
         [Fact]
-        public void ShoppingCartItem_testProperty_CorrectValue() 
+        public void ShoppingCartItem_testProperty_CorrectValue()
         {
             //arrange
             var cartItem = new ShoppingCartItem()

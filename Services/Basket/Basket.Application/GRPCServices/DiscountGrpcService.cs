@@ -3,7 +3,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Basket.Application.GRPCServices
 {
-    public class DiscountGrpcService
+    public interface IDiscountGrpcService
+    {
+        Task<CouponModel> GetDiscount(string productName);
+    }
+    public class DiscountGrpcService: IDiscountGrpcService
     {
         private readonly DiscountProtoService.DiscountProtoServiceClient _discountProtoServiceClient;
         //private readonly ILogger<DiscountGrpcService> _logger;

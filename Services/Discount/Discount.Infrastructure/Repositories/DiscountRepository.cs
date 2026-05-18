@@ -34,11 +34,11 @@ namespace Discount.Infrastructure.Repositories
 
             _logger.LogInformation($"Discount for the {productName} trying to retrieved from database {copoun}");
 
-            //if (copoun == null)
-            //{
-            //    return new Coupon
-            //    { Amount = 0, Description = "No Discount Available for this product", ProductName = "No discount" };
-            //}
+            if (copoun == null)
+            {
+                return new Coupon
+                { Amount = 0, Description = "No Discount Available for this product", ProductName = "No discount" };
+            }
             return copoun;
         }
 

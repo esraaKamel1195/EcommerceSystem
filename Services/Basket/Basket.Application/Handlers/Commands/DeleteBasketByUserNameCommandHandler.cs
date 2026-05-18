@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Basket.Application.Handlers.Commands
 {
-    public class DeleteBasketByUserNameCommandHandler : IRequestHandler<DeleteBasketByUserNameCommand, Unit>
+    public class DeleteBasketByUserNameCommandHandler : 
+        IRequestHandler<DeleteBasketByUserNameCommand, Unit>
     {
         private readonly IBasketRepository _basketRepository;
 

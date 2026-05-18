@@ -25,7 +25,7 @@ namespace Ordering.Infrastructure.Data
                         Email = "test@email.com",
                         AddressLine = "1st Street",
                         Country = "China",
-                        TotalPrice = "100",
+                        TotalPrice = 1000,
                         City ="trsst",
                         ZibCode ="15263",
                         CardName = "tes test",

@@ -17,12 +17,10 @@ using System.Reflection;
 
 namespace Basket.Api;
 
-public class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
-        //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
         var builder = WebApplication.CreateBuilder(args);
         //builder.AddServiceDefaults();
 
@@ -43,6 +41,7 @@ public class Program
 
         builder.Services.AddScoped<IBasketRepository, BasketRepository>();
         builder.Services.AddScoped<DiscountGrpcService>();
+        builder.Services.AddScoped<IDiscountGrpcService, DiscountGrpcService>();
         builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
             cfg => cfg.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"])
         );
@@ -55,52 +54,52 @@ public class Program
 
         builder.Services.AddMassTransitHostedService();
 
-        var userPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
+        //var userPolicy = new AuthorizationPolicyBuilder()
+        //    .RequireAuthenticatedUser()
+        //    .Build();
 
         builder.Services.AddControllers(config =>
         {
-            config.Filters.Add(new AuthorizeFilter(userPolicy));
+            //config.Filters.Add(new AuthorizeFilter(userPolicy));
         });
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = "http://identityserver:9011/"; // IdentityServer URL
-                options.RequireHttpsMetadata = false; // Set to true in production
-                options.MetadataAddress = "http://identityserver:9011/.well-known/openid-configuration";
+        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options =>
+        //    {
+        //        options.Authority = "http://identityserver:9011/"; // IdentityServer URL
+        //        options.RequireHttpsMetadata = false; // Set to true in production
+        //        options.MetadataAddress = "http://identityserver:9011/.well-known/openid-configuration";
 
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = "http://identityserver:9011/",
-                    ValidateAudience = true,
-                    ValidAudience = "Basket",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
-                };
+        //        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        //        {
+        //            ValidateIssuer = true,
+        //            ValidIssuer = "http://identityserver:9011/",
+        //            ValidateAudience = true,
+        //            ValidAudience = "Basket",
+        //            ValidateLifetime = true,
+        //            ValidateIssuerSigningKey = true,
+        //            ClockSkew = TimeSpan.Zero,
+        //        };
 
-                // add this to docker to host communication
-                options.BackchannelHttpHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                };
+        //        // add this to docker to host communication
+        //        options.BackchannelHttpHandler = new HttpClientHandler
+        //        {
+        //            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        //        };
 
-                //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        Log.Error("Authentication failed: {Error}", context.Exception.Message);
-                        Console.WriteLine($"Authentication failed");
-                        Console.WriteLine($"Exception: {context.Exception}");
-                        Console.WriteLine($"Authority: {options.Authority}");
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+        //        //options.Audience = "catalog_api"; // API resource name defined in IdentityServer
+        //        options.Events = new JwtBearerEvents
+        //        {
+        //            OnAuthenticationFailed = context =>
+        //            {
+        //                Log.Error("Authentication failed: {Error}", context.Exception.Message);
+        //                Console.WriteLine($"Authentication failed");
+        //                Console.WriteLine($"Exception: {context.Exception}");
+        //                Console.WriteLine($"Authority: {options.Authority}");
+        //                return Task.CompletedTask;
+        //            }
+        //        };
+        //    });
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -240,8 +239,8 @@ public class Program
             });
         }
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        //app.UseAuthentication();
+        //app.UseAuthorization();
         app.UseCors("*");
 
         app.MapControllers();
@@ -249,3 +248,7 @@ public class Program
         app.Run();
     }
 }
+
+public partial class Program 
+{
+} // for testing purposes

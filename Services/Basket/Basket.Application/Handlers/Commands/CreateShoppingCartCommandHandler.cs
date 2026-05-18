@@ -7,23 +7,27 @@ using MediatR;
 
 namespace Basket.Application.Handlers.Commands
 {
-    public class CreateShoppingCartCommandHandler : IRequestHandler<CreateShoppingCartCommand, ShoppingCartResponse>
+    public class CreateShoppingCartCommandHandler : 
+        IRequestHandler<CreateShoppingCartCommand, ShoppingCartResponse>
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
-        private readonly DiscountGrpcService _discountGrpcService;
+        private readonly IDiscountGrpcService _discountGrpcService;
 
         public CreateShoppingCartCommandHandler(
            IBasketRepository basketRepository,
-           IMapper mapper,
-           DiscountGrpcService discountGrpcService
+           IMapper mapper
+           ,IDiscountGrpcService discountGrpcService
         ) {
            _basketRepository = basketRepository;
            _mapper = mapper;
            _discountGrpcService = discountGrpcService;
         }
 
-        public async Task<ShoppingCartResponse> Handle(CreateShoppingCartCommand request, CancellationToken cancellationToken)
+        public async Task<ShoppingCartResponse> Handle(
+            CreateShoppingCartCommand request,
+            CancellationToken cancellationToken
+        )
         {
             foreach (var item in request.Items)
             {
@@ -33,7 +37,7 @@ namespace Basket.Application.Handlers.Commands
                     item.priceAfterDiscount = item.price - coupon.Amount;
                 }
             }
-            
+
             var shoppingCart = await _basketRepository.UpdateBasket(new Core.Entities.ShoppingCart()
             {
                 UserName = request.UserName,
